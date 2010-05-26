@@ -11,62 +11,54 @@
 package com.googlecode.starrating;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 
 /**
- *
+ * StarRating Class
+ * StarRating is a JPanel that holds 10 images of half stars (5 stars in total)
+ * The rate ranges from 0.5 to 5.0
+ * When a star is clicked a property change event is fired. The properties name is
+ * {@link #RATE_CHANGED}.
  * @author ssoldatos
  */
 public class StarRating extends javax.swing.JPanel {
 
   private int rate;
   private Star[] stars = new Star[10];
-  private JLabel value = new JLabel();
-  private JButton editButton = new JButton();
-  public static String EDIT_ICON = "images/edit.png";
-  private boolean editMode = false;
+  private ValueLabel valueLabel = new ValueLabel();
+  private JPanel starPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+  private JPanel editPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+  private boolean valueLabelShown = false;
+  public static String RATE_CHANGED = "RATE_CHANGED";
 
+  /**
+   * Creates a default StarRating with a rate of 0
+   */
   public StarRating() {
     this(0);
   }
 
-  /** Creates new form StarRating
-   * @param rate 
+  /** Creates a StarRating with the initial rate of rate
+   * @param rate The initial rate
    */
   public StarRating(int rate) {
     initComponents();
-    JPanel starPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
     starPanel.setOpaque(false);
+    editPanel.setOpaque(false);
 
     for (int i = 1; i < 11; i++) {
-      String im;
-      if (i % 2 == 1) {
-        im = i <= rate ? Star.LEFT_ENABLED : Star.LEFT_DISABLED;
-      } else {
-        im = i <= rate ? Star.RIGHT_ENABLED : Star.RIGHT_DISABLED;
-      }
-      stars[i - 1] = new Star(im, i);
+      boolean enabled;
+      enabled = i <= rate ? true : false;
+      stars[i - 1] = new Star(i, enabled);
       starPanel.add(stars[i - 1]);
+
     }
     setRate(rate);
-    //add(value);
-    editButton.setPreferredSize(new Dimension(20, 16));
-    editButton.setBackground(Color.white);
-    editButton.setOpaque(false);
-    editButton.setBorder(BorderFactory.createEmptyBorder());
-    editButton.setIcon(new ImageIcon(getClass().getResource(EDIT_ICON)));
-    add(starPanel,BorderLayout.CENTER);
-    add(editButton,BorderLayout.EAST);
+    valueLabel.setValue(rate);
+    add(starPanel, BorderLayout.CENTER);
+    add(editPanel, BorderLayout.EAST);
   }
 
   /** This method is called from within the constructor to
@@ -95,12 +87,48 @@ public class StarRating extends javax.swing.JPanel {
   }// </editor-fold>//GEN-END:initComponents
 
   private void formMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseEntered
-    clearRate();
+    if (isRatingEnabled()) {
+      clearRate();
+    }
   }//GEN-LAST:event_formMouseEntered
 
   private void formMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseExited
-    previewRate(getRate());
+    if (isRatingEnabled()) {
+      previewRate(getRate());
+    }
   }//GEN-LAST:event_formMouseExited
+
+  /**
+   * Sets if StarRating is enabled
+   * @param enabled
+   */
+  public void setRatingEnabled(boolean enabled) {
+    setEnabled(enabled);
+  }
+
+  /**
+   * Gets if StarRating is enabled
+   * @return If StarRating is enabled
+   */
+  public boolean isRatingEnabled() {
+    return isEnabled();
+  }
+
+  /**
+   * Shows the value label should be shown next to the stars
+   */
+  public void showValueLabel() {
+    editPanel.add(getValueLabel());
+    valueLabelShown = true;
+  }
+
+  /**
+   * Hides the value label
+   */
+  public void hideValueLabel() {
+    editPanel.remove(getValueLabel());
+    valueLabelShown = false;
+  }
 
   void clearRate() {
     for (int i = 0; i < stars.length; i++) {
@@ -118,15 +146,11 @@ public class StarRating extends javax.swing.JPanel {
         star.clearRate();
       }
     }
-    setLabelValue(rate);
-  }
-
-  public void setLabelValue(int rate) {
-    double d = (double) rate / 2;
-    value.setText(String.valueOf(d));
+    valueLabel.setValue(rate);
   }
 
   /**
+   * Gets the rate
    * @return the rate
    */
   public int getRate() {
@@ -134,16 +158,44 @@ public class StarRating extends javax.swing.JPanel {
   }
 
   /**
+   * Sets the rate
    * @param rate the rate to set
    */
   public void setRate(int rate) {
+    int oldRate = this.rate;
     this.rate = rate;
     previewRate(rate);
-    setLabelValue(rate);
+    valueLabel.setValue(rate);
+    firePropertyChange(RATE_CHANGED, (double)oldRate/2, (double)rate/2);
   }
 
-  public JButton getEditButton() {
-    return editButton;
+  /**
+   * Gets the value label
+   * @return the valueLabel
+   */
+  public JLabel getValueLabel() {
+    return valueLabel;
+  }
+
+  /**
+   * Gets if value label is shown
+   * @return the isValueLabelShown
+   */
+  public boolean isValueLabelShown() {
+    return valueLabelShown;
+  }
+
+  /**
+   * Sets if the value label is shown
+   * @param shown If the value label is shown
+   */
+  public void setValueLabelShown(boolean shown) {
+    if (shown) {
+      showValueLabel();
+    } else {
+      hideValueLabel();
+    }
+    valueLabelShown = shown;
   }
   // Variables declaration - do not modify//GEN-BEGIN:variables
   // End of variables declaration//GEN-END:variables
