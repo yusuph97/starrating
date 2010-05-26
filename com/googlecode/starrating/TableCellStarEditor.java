@@ -38,7 +38,7 @@ public class TableCellStarEditor extends AbstractCellEditor implements TableCell
   }
 
   public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-    getRating().setRate(Integer.parseInt(String.valueOf(value)));
+    getRating().setRate(Double.parseDouble(String.valueOf(value)));
     return getRating();
   }
 

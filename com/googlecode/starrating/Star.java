@@ -49,7 +49,7 @@ public class Star extends JLabel {
       public void mouseEntered(MouseEvent e) {
         StarRating sr = getSRating();
         if (sr.isEnabled()) {
-          sr.previewRate(index);
+          sr.previewRate((double)index/2);
           super.mouseEntered(e);
         }
       }
@@ -67,8 +67,8 @@ public class Star extends JLabel {
       public void mouseClicked(MouseEvent e) {
         StarRating sr = getSRating();
         if (sr.isEnabled()) {
-          sr.setRate(index);
-          sr.previewRate(index);
+          sr.setRate((double)index/2);
+          sr.previewRate((double)index/2);
           super.mouseClicked(e);
         }
       }
@@ -113,7 +113,7 @@ public class Star extends JLabel {
   }
 
   private String getImage() {
-    if (index % 2 == 1) {
+    if (index % 2 == 0) {
       isLeft = true;
       return starEnabled ? LEFT_ENABLED : LEFT_DISABLED;
     } else {

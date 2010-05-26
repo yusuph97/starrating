@@ -28,10 +28,10 @@ public class test extends javax.swing.JFrame {
     setLocationRelativeTo(null);
     DefaultTableModel model =new DefaultTableModel(new String[]{"Title","Rating"}, 0);
     table.setModel(model);
-    model.addRow(new Object[]{"PHP",5});
-    model.addRow(new Object[]{"Java",6});
+    model.addRow(new Object[]{"PHP",new Double(3.0)});
+    model.addRow(new Object[]{"Java",2.5});
     model.addRow(new Object[]{"VBScript",3});
-    model.addRow(new Object[]{"C++",7});
+    model.addRow(new Object[]{"C++",1.5});
     TableCellStarRenderer rend = new TableCellStarRenderer(true);
     TableCellStarEditor ed = new TableCellStarEditor(true);
     table.getColumnModel().getColumn(1).setCellRenderer(rend);
@@ -40,7 +40,7 @@ public class test extends javax.swing.JFrame {
 
       public void editingStopped(ChangeEvent e) {
          TableCellStarEditor s =  (TableCellStarEditor) e.getSource();
-         System.out.println((double)s.getRating().getRate()/2);
+         System.out.println((double)s.getRating().getRate());
       }
 
       public void editingCanceled(ChangeEvent e) {
