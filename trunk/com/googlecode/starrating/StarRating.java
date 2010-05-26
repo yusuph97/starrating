@@ -25,8 +25,9 @@ import javax.swing.JPanel;
  */
 public class StarRating extends javax.swing.JPanel {
 
-  private int rate;
-  private Star[] stars = new Star[10];
+  private double rate;
+  private int maxRate = 5;
+  private Star[] stars = new Star[maxRate*2];
   private ValueLabel valueLabel = new ValueLabel();
   private JPanel starPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
   private JPanel editPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
@@ -37,22 +38,22 @@ public class StarRating extends javax.swing.JPanel {
    * Creates a default StarRating with a rate of 0
    */
   public StarRating() {
-    this(0);
+    this(0.0);
   }
 
   /** Creates a StarRating with the initial rate of rate
    * @param rate The initial rate
    */
-  public StarRating(int rate) {
+  public StarRating(double rate) {
     initComponents();
     starPanel.setOpaque(false);
     editPanel.setOpaque(false);
 
-    for (int i = 1; i < 11; i++) {
+    for (int i = 0; i < stars.length; i++) {
       boolean enabled;
-      enabled = i <= rate ? true : false;
-      stars[i - 1] = new Star(i, enabled);
-      starPanel.add(stars[i - 1]);
+      enabled = i <= rate*2 ? true : false;
+      stars[i] = new Star(i, enabled);
+      starPanel.add(stars[i]);
 
     }
     setRate(rate);
@@ -137,10 +138,10 @@ public class StarRating extends javax.swing.JPanel {
     }
   }
 
-  void previewRate(int rate) {
+  void previewRate(double rate) {
     for (int i = 0; i < stars.length; i++) {
       Star star = stars[i];
-      if (i < rate) {
+      if (i < rate*2) {
         star.setRate();
       } else {
         star.clearRate();
@@ -153,7 +154,7 @@ public class StarRating extends javax.swing.JPanel {
    * Gets the rate
    * @return the rate
    */
-  public int getRate() {
+  public double getRate() {
     return rate;
   }
 
@@ -161,12 +162,12 @@ public class StarRating extends javax.swing.JPanel {
    * Sets the rate
    * @param rate the rate to set
    */
-  public void setRate(int rate) {
-    int oldRate = this.rate;
+  public void setRate(double rate) {
+    double oldRate = this.rate;
     this.rate = rate;
     previewRate(rate);
     valueLabel.setValue(rate);
-    firePropertyChange(RATE_CHANGED, (double)oldRate/2, (double)rate/2);
+    firePropertyChange(RATE_CHANGED, oldRate, rate);
   }
 
   /**

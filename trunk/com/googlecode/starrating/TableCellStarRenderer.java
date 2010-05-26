@@ -12,13 +12,12 @@ import javax.swing.table.DefaultTableCellRenderer;
  *
  * @author ssoldatos
  */
-class TableCellStarRenderer extends DefaultTableCellRenderer {
+public class TableCellStarRenderer extends DefaultTableCellRenderer {
 
   private StarRating rating = new StarRating();
   boolean hasValueLabel;
 
   public TableCellStarRenderer(boolean label) {
-    super();
     setValueLabelShown(label);
   }
 
@@ -35,8 +34,8 @@ class TableCellStarRenderer extends DefaultTableCellRenderer {
     } else {
       rating.setBackground(table.getBackground());
     }
-    if (value instanceof Integer) {
-      rating.setRate(Integer.parseInt(value.toString()));
+    if (value instanceof Double) {
+      rating.setRate(Double.parseDouble(value.toString()));
     }
     return rating;
   }

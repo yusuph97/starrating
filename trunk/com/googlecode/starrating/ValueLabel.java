@@ -23,8 +23,7 @@ public class ValueLabel extends JLabel {
    * Creates a value label with a value of rate
    * @param rate The initial value
    */
-  public void setValue(int rate) {
-    double d = (double) rate / 2;
-    setText(String.valueOf(d));
+  public void setValue(double rate) {
+    setText(String.valueOf(rate));
   }
 }
