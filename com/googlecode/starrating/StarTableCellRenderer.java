@@ -32,6 +32,7 @@ public class StarTableCellRenderer extends DefaultTableCellRenderer {
     super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
     if (isSelected) {
       rating.setBackground(table.getSelectionBackground());
+      rating.setOpaque(true);
     } else {
       rating.setBackground(table.getBackground());
     }

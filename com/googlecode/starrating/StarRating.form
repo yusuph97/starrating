@@ -12,6 +12,7 @@
       <Dimension value="[100, 20]"/>
     </Property>
     <Property name="name" type="java.lang.String" value="StarRating" noResource="true"/>
+    <Property name="opaque" type="boolean" value="false"/>
     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
       <Dimension value="[120, 20]"/>
     </Property>

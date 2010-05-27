@@ -6,9 +6,13 @@ package com.googlecode.starrating;
 
 import java.awt.Component;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.EventObject;
 import javax.swing.AbstractCellEditor;
 import javax.swing.JTable;
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ChangeEvent;
 import javax.swing.table.TableCellEditor;
 
 /**
@@ -32,7 +36,6 @@ public class StarTableCellEditor extends AbstractCellEditor implements TableCell
     w = rating.getWidth();
     setValueLabelShown(hasValueLabel);
     rating.setRemoveButtonShown(true);
-
   }
 
   public double getValue(){

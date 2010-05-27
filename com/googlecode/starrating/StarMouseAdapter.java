@@ -7,6 +7,7 @@ package com.googlecode.starrating;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
+import javax.swing.JTable;
 
 /**
  *
@@ -59,6 +60,10 @@ import javax.swing.ImageIcon;
     if (sr.isEnabled()) {
       sr.setRate((double) index / 2);
       sr.previewRate((double) index / 2);
+      if(sr.getParent() instanceof JTable){
+        JTable table = (JTable)sr.getParent();
+        table.getCellEditor().stopCellEditing();
+      }
       super.mouseClicked(e);
     }
   }
