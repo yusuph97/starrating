@@ -21,7 +21,8 @@ import javax.swing.JLabel;
  */
 public class RemoveButton extends JLabel {
 
-  private static String REMOVE_IMAGE = "images/remove.png";
+  public static String REMOVE_IMAGE = "images/remove.png";
+  public static String REMOVE_IMAGE_DISABLED = "images/remove_d.png";
 
   public RemoveButton() {
     super();
@@ -29,7 +30,7 @@ public class RemoveButton extends JLabel {
     setOpaque(false);
     setBackground(Color.WHITE);
     setPreferredSize(new Dimension(20, 20));
-    setIcon(new ImageIcon(getClass().getResource(REMOVE_IMAGE)));
+    setIcon(new ImageIcon(getClass().getResource(REMOVE_IMAGE_DISABLED)));
     setCursor(new Cursor(Cursor.HAND_CURSOR));
     addMouseListener(new StarMouseAdapter(0));
   }

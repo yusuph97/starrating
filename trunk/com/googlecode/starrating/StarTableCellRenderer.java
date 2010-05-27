@@ -12,17 +12,17 @@ import javax.swing.table.DefaultTableCellRenderer;
  *
  * @author ssoldatos
  */
-public class TableCellStarRenderer extends DefaultTableCellRenderer {
+public class StarTableCellRenderer extends DefaultTableCellRenderer {
 
   private StarRating rating = new StarRating();
   boolean hasValueLabel;
 
-  public TableCellStarRenderer(boolean label, boolean remove) {
+  public StarTableCellRenderer(boolean label, boolean remove) {
     setValueLabelShown(label);
     rating.setRemoveButtonShown(remove);
   }
 
-  TableCellStarRenderer() {
+  StarTableCellRenderer() {
     this(false,false);
   }
 

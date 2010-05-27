@@ -12,6 +12,7 @@ package com.googlecode.starrating;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 

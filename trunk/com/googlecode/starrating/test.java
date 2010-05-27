@@ -32,15 +32,16 @@ public class test extends javax.swing.JFrame {
     model.addRow(new Object[]{"Java",2.5});
     model.addRow(new Object[]{"VBScript",3});
     model.addRow(new Object[]{"C++",1.5});
-    TableCellStarRenderer rend = new TableCellStarRenderer(true,false);
-    TableCellStarEditor ed = new TableCellStarEditor(true);
+    StarTableCellRenderer rend = new StarTableCellRenderer(true,false);
+    StarTableCellEditor ed = new StarTableCellEditor(true);
     table.getColumnModel().getColumn(1).setCellRenderer(rend);
     table.getColumnModel().getColumn(1).setCellEditor(ed);
     table.setRowHeight(22);
     ed.addCellEditorListener(new CellEditorListener() {
 
       public void editingStopped(ChangeEvent e) {
-         TableCellStarEditor s =  (TableCellStarEditor) e.getSource();
+         StarTableCellEditor s =  (StarTableCellEditor) e.getSource();
+         System.out.println(s.getValue());
       }
 
       public void editingCanceled(ChangeEvent e) {
