@@ -15,24 +15,28 @@ import javax.swing.table.TableCellEditor;
  *
  * @author ssoldatos
  */
-public class TableCellStarEditor extends AbstractCellEditor implements TableCellEditor {
+public class StarTableCellEditor extends AbstractCellEditor implements TableCellEditor {
 
   private static final long serialVersionUID = 124253466L;
   private StarRating rating;
   private int w;
   private boolean hasValueLabel;
 
-  public TableCellStarEditor() {
+  public StarTableCellEditor() {
     this(false);
   }
 
-  public TableCellStarEditor(boolean hasValueLabel) {
+  public StarTableCellEditor(boolean hasValueLabel) {
     super();
     rating = new StarRating();
     w = rating.getWidth();
     setValueLabelShown(hasValueLabel);
     rating.setRemoveButtonShown(true);
 
+  }
+
+  public double getValue(){
+    return rating.getRate();
   }
 
   public Object getCellEditorValue() {
