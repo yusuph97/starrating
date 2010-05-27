@@ -18,9 +18,14 @@ public class ValueLabel extends JLabel {
    * Creates a default value label
    */
   public ValueLabel() {
+    
+  }
+
+  ValueLabel(double rate) {
     super();
     setOpaque(false);
     setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
+    setValue(rate);
   }
 
   /**

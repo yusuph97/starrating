@@ -14,6 +14,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -30,9 +31,9 @@ public class StarRating extends javax.swing.JPanel {
 
   private double rate;
   private int maxRate;
-  private Star[] stars;
-  private ValueLabel valueLabel = new ValueLabel();
-  private RemoveButton removeButton = new RemoveButton();
+  private ArrayList<Star> stars;
+  private ValueLabel valueLabel;
+  private RemoveButton removeButton;
   private boolean valueLabelShown = false;
   private boolean removeButtonShown = false;
   public static String RATE_CHANGED = "RATE_CHANGED";
@@ -54,24 +55,26 @@ public class StarRating extends javax.swing.JPanel {
 
   /** Creates a StarRating with the initial rate of rate
    * @param rate The initial rate
+   * @param maxRate 
    */
   public StarRating(double rate, int maxRate) {
     super();
     this.maxRate = maxRate;
-    stars = new Star[getMaxRate() * 2];
-    valueLabel.setValue(rate);
     initComponents();
+    stars = new ArrayList<Star>();
+    valueLabel = new ValueLabel(rate);
+    removeButton = new RemoveButton();
     setOpaque(false);
-    for (int i = 0; i < stars.length; i++) {
+    for (int i = 0; i < getMaxRate() * 2; i++) {
       boolean enabled;
       enabled = i <= rate * 2 ? true : false;
-      stars[i] = new Star(i, enabled);
-      add(stars[i]);
-      stars[i].addStarMouseAdapter();
+      stars.add(i, new Star(i, enabled));
+      add(stars.get(i));
+      stars.get(i).addStarMouseAdapter();
     }
     setRate(rate);
     showRemoveButton();
-    setPreferredSize(new Dimension(maxRate*20+40, 20));
+    setPreferredSize(new Dimension(maxRate * 20 + 40, 20));
   }
 
   /** This method is called from within the constructor to
@@ -136,6 +139,7 @@ public class StarRating extends javax.swing.JPanel {
       add(getValueLabel(), getComponentCount());
       valueLabelShown = true;
       validate();
+      repaint();
     }
   }
 
@@ -147,19 +151,20 @@ public class StarRating extends javax.swing.JPanel {
       remove(getValueLabel());
       valueLabelShown = false;
       validate();
+      repaint();
     }
   }
 
   void clearRate() {
-    for (int i = 0; i < stars.length; i++) {
-      Star star = stars[i];
+    for (int i = 0; i < stars.size(); i++) {
+      Star star = stars.get(i);
       star.clearRate();
     }
   }
 
   void previewRate(double rate) {
-    for (int i = 0; i < stars.length; i++) {
-      Star star = stars[i];
+    for (int i = 0; i < stars.size(); i++) {
+      Star star = stars.get(i);
       if (i < rate * 2) {
         star.setRate();
       } else {
@@ -259,6 +264,7 @@ public class StarRating extends javax.swing.JPanel {
       add(removeButton, 0);
       removeButtonShown = true;
       validate();
+      repaint();
     }
   }
 
@@ -273,6 +279,24 @@ public class StarRating extends javax.swing.JPanel {
    * @param maxRate the maxRate to set
    */
   public void setMaxRate(int maxRate) {
+    if (maxRate > getMaxRate()) {
+      for (int i = stars.size(); i < maxRate * 2; i++) {
+        stars.add(i, new Star(i, false));
+        add(stars.get(i), i + 1);
+        stars.get(i).addStarMouseAdapter();
+      }
+    } else {
+      for (int i = stars.size(); i > maxRate * 2; i--) {
+        remove(stars.get(i-1));
+        stars.remove(i-1);
+      }
+      if(getRate() > maxRate){
+        setRate(maxRate);
+      }
+    }
+    setPreferredSize(new Dimension(maxRate * 20 + 40, getHeight()));
+    validate();
+    repaint();
     this.maxRate = maxRate;
   }
   // Variables declaration - do not modify//GEN-BEGIN:variables
