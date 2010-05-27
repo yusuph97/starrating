@@ -52,11 +52,11 @@ public class Star extends JLabel {
     setOpaque(false);
     setIcon(new ImageIcon(getClass().getResource(image)));
     setCursor(new Cursor(Cursor.HAND_CURSOR));
-    addMouseListener(new StarMouseAdapter(index));
+    addMouseListener(new StarMouseAdapter(index,StarMouseAdapter.STAR));
   }
 
   void addStarMouseAdapter(){
-    addMouseListener(new StarMouseAdapter(index));
+    addMouseListener(new StarMouseAdapter(index,StarMouseAdapter.STAR));
   }
 
   public ImageIcon getLeftEnabled() {

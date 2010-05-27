@@ -12,6 +12,7 @@ package com.googlecode.starrating;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -28,8 +29,8 @@ import javax.swing.JPanel;
 public class StarRating extends javax.swing.JPanel {
 
   private double rate;
-  private int maxRate = 5;
-  private Star[] stars = new Star[maxRate * 2];
+  private int maxRate;
+  private Star[] stars;
   private ValueLabel valueLabel = new ValueLabel();
   private RemoveButton removeButton = new RemoveButton();
   private boolean valueLabelShown = false;
@@ -40,14 +41,24 @@ public class StarRating extends javax.swing.JPanel {
    * Creates a default StarRating with a rate of 0
    */
   public StarRating() {
-    this(0.0);
+    this(0.0, 5);
+  }
+
+  public StarRating(double rate) {
+    this(rate, 5);
+  }
+
+  public StarRating(int maxRate) {
+    this(0.0, maxRate);
   }
 
   /** Creates a StarRating with the initial rate of rate
    * @param rate The initial rate
    */
-  public StarRating(double rate) {
+  public StarRating(double rate, int maxRate) {
     super();
+    this.maxRate = maxRate;
+    stars = new Star[getMaxRate() * 2];
     valueLabel.setValue(rate);
     initComponents();
     setOpaque(false);
@@ -60,6 +71,7 @@ public class StarRating extends javax.swing.JPanel {
     }
     setRate(rate);
     showRemoveButton();
+    setPreferredSize(new Dimension(maxRate*20+40, 20));
   }
 
   /** This method is called from within the constructor to
@@ -72,11 +84,11 @@ public class StarRating extends javax.swing.JPanel {
   private void initComponents() {
 
     setBackground(new java.awt.Color(255, 51, 51));
-    setMaximumSize(new java.awt.Dimension(200, 20));
+    setMaximumSize(new java.awt.Dimension(10000, 20));
     setMinimumSize(new java.awt.Dimension(150, 20));
     setName("StarRating"); // NOI18N
     setOpaque(false);
-    setPreferredSize(new java.awt.Dimension(140, 20));
+    setPreferredSize(new java.awt.Dimension(300, 20));
     addMouseListener(new java.awt.event.MouseAdapter() {
       public void mouseEntered(java.awt.event.MouseEvent evt) {
         formMouseEntered(evt);
@@ -248,6 +260,20 @@ public class StarRating extends javax.swing.JPanel {
       removeButtonShown = true;
       validate();
     }
+  }
+
+  /**
+   * @return the maxRate
+   */
+  public int getMaxRate() {
+    return maxRate;
+  }
+
+  /**
+   * @param maxRate the maxRate to set
+   */
+  public void setMaxRate(int maxRate) {
+    this.maxRate = maxRate;
   }
   // Variables declaration - do not modify//GEN-BEGIN:variables
   // End of variables declaration//GEN-END:variables

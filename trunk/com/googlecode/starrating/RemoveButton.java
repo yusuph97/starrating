@@ -25,7 +25,7 @@ public class RemoveButton extends JLabel {
     setPreferredSize(new Dimension(20, 20));
     setIcon(new ImageIcon(getClass().getResource(REMOVE_IMAGE_DISABLED)));
     setCursor(new Cursor(Cursor.HAND_CURSOR));
-    addMouseListener(new StarMouseAdapter(0));
+    addMouseListener(new StarMouseAdapter(-1,StarMouseAdapter.REMOVE_BUTTON));
     setOpaque(false);
   }
 
