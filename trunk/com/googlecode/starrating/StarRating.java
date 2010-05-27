@@ -30,10 +30,8 @@ public class StarRating extends javax.swing.JPanel {
   private Star[] stars = new Star[maxRate*2];
   private ValueLabel valueLabel = new ValueLabel();
   private RemoveButton removeButton = new RemoveButton();
-  private JPanel starPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-  private JPanel valuePanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
   private boolean valueLabelShown = false;
-  private boolean removeButtonShown = true;
+  private boolean removeButtonShown = false;
   public static String RATE_CHANGED = "RATE_CHANGED";
 
   /**
@@ -47,23 +45,19 @@ public class StarRating extends javax.swing.JPanel {
    * @param rate The initial rate
    */
   public StarRating(double rate) {
+    valueLabel.setValue(rate);
     initComponents();
-    starPanel.setOpaque(false);
-    valuePanel.setOpaque(false);
-    starPanel.add(removeButton);
-
+    setOpaque(false);
     for (int i = 0; i < stars.length; i++) {
       boolean enabled;
       enabled = i <= rate*2 ? true : false;
       stars[i] = new Star(i, enabled);
-      starPanel.add(stars[i]);
-
+      add(stars[i]);
+      stars[i].addStarMouseAdapter();
     }
     setRate(rate);
-    valueLabel.setValue(rate);
+    showRemoveButton();
     
-    add(starPanel, BorderLayout.CENTER);
-    add(valuePanel, BorderLayout.EAST);
   }
 
   /** This method is called from within the constructor to
@@ -88,7 +82,7 @@ public class StarRating extends javax.swing.JPanel {
         formMouseExited(evt);
       }
     });
-    setLayout(new java.awt.BorderLayout());
+    setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
   }// </editor-fold>//GEN-END:initComponents
 
   private void formMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseEntered
@@ -123,16 +117,18 @@ public class StarRating extends javax.swing.JPanel {
    * Shows the value label should be shown next to the stars
    */
   public void showValueLabel() {
-    valuePanel.add(getValueLabel());
+    add(getValueLabel(),getComponentCount());
     valueLabelShown = true;
+    validate();
   }
 
   /**
    * Hides the value label
    */
   public void hideValueLabel() {
-    valuePanel.remove(getValueLabel());
+    remove(getValueLabel());
     valueLabelShown = false;
+    validate();
   }
 
   void clearRate() {
@@ -202,12 +198,12 @@ public class StarRating extends javax.swing.JPanel {
    * @param remove If remove button is shown
    */
   public void setRemoveButtonShown(boolean remove){
-    removeButtonShown = remove;
     if(remove){
       showRemoveButton();
     } else {
       hideRemoveButton();
     }
+    removeButtonShown = remove;
   }
 
   /**
@@ -232,14 +228,16 @@ public class StarRating extends javax.swing.JPanel {
   }
 
   private void hideRemoveButton() {
-    starPanel.remove(removeButton);
+    remove(removeButton);
     removeButtonShown = false;
+    validate();
   }
 
   private void showRemoveButton() {
     if(!isRemoveButtonShown()){
-      starPanel.add(removeButton);
+      add(removeButton,0);
       removeButtonShown = true;
+      validate();
     }
   }
   // Variables declaration - do not modify//GEN-BEGIN:variables
