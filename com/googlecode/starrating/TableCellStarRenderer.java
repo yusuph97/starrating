@@ -17,13 +17,13 @@ public class TableCellStarRenderer extends DefaultTableCellRenderer {
   private StarRating rating = new StarRating();
   boolean hasValueLabel;
 
-  public TableCellStarRenderer(boolean label) {
+  public TableCellStarRenderer(boolean label, boolean remove) {
     setValueLabelShown(label);
-    rating.setRemoveButtonShown(false);
+    rating.setRemoveButtonShown(remove);
   }
 
   TableCellStarRenderer() {
-    this(false);
+    this(false,false);
   }
 
   @Override

@@ -4,6 +4,7 @@
  */
 package com.googlecode.starrating;
 
+import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -38,46 +39,17 @@ public class Star extends JLabel {
    * @param index
    */
   Star(final int index, boolean enabled) {
+    super();
     this.index = index;
     this.starEnabled = enabled;
     String image = getImage();
     setIcon(new ImageIcon(getClass().getResource(image)));
-
-    addMouseListener(new MouseAdapter() {
-
-      @Override
-      public void mouseEntered(MouseEvent e) {
-        StarRating sr = getSRating();
-        if (sr.isEnabled()) {
-          sr.previewRate((double)index/2);
-          super.mouseEntered(e);
-        }
-      }
-
-      @Override
-      public void mouseExited(MouseEvent e) {
-        StarRating sr = getSRating();
-        if (sr.isEnabled()) {
-          sr.setRate(sr.getRate());
-          super.mouseExited(e);
-        }
-      }
-
-      @Override
-      public void mouseClicked(MouseEvent e) {
-        StarRating sr = getSRating();
-        if (sr.isEnabled()) {
-          sr.setRate((double)index/2);
-          sr.previewRate((double)index/2);
-          super.mouseClicked(e);
-        }
-      }
-    });
-
+    setCursor(new Cursor(Cursor.HAND_CURSOR));
+    addMouseListener(new StarMouseAdapter(index));
   }
 
-  private StarRating getSRating() {
-    return (StarRating) getParent().getParent();
+  void addStarMouseAdapter(){
+    addMouseListener(new StarMouseAdapter(index));
   }
 
   public ImageIcon getLeftEnabled() {

@@ -69,6 +69,10 @@
       </SubComponents>
     </Container>
     <Component class="com.googlecode.starrating.StarRating" name="srating">
+      <Properties>
+        <Property name="removeButtonShown" type="boolean" value="true"/>
+        <Property name="valueLabelShown" type="boolean" value="true"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="jCheckBox1">
       <Properties>

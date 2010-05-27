@@ -32,7 +32,7 @@ public class test extends javax.swing.JFrame {
     model.addRow(new Object[]{"Java",2.5});
     model.addRow(new Object[]{"VBScript",3});
     model.addRow(new Object[]{"C++",1.5});
-    TableCellStarRenderer rend = new TableCellStarRenderer(true);
+    TableCellStarRenderer rend = new TableCellStarRenderer(true,false);
     TableCellStarEditor ed = new TableCellStarEditor(true);
     table.getColumnModel().getColumn(1).setCellRenderer(rend);
     table.getColumnModel().getColumn(1).setCellEditor(ed);
@@ -41,7 +41,6 @@ public class test extends javax.swing.JFrame {
 
       public void editingStopped(ChangeEvent e) {
          TableCellStarEditor s =  (TableCellStarEditor) e.getSource();
-         System.out.println((double)s.getRating().getRate());
       }
 
       public void editingCanceled(ChangeEvent e) {
@@ -78,6 +77,9 @@ public class test extends javax.swing.JFrame {
 
     jScrollPane1.setPreferredSize(new java.awt.Dimension(452, 200));
     jScrollPane1.setViewportView(table);
+
+    srating.setRemoveButtonShown(true);
+    srating.setValueLabelShown(true);
 
     jCheckBox1.setSelected(true);
     jCheckBox1.setText("enabled");

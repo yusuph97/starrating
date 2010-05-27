@@ -31,6 +31,8 @@ public class TableCellStarEditor extends AbstractCellEditor implements TableCell
     rating = new StarRating();
     w = rating.getWidth();
     setValueLabelShown(hasValueLabel);
+    rating.setRemoveButtonShown(true);
+
   }
 
   public Object getCellEditorValue() {

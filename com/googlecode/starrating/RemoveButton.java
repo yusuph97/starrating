@@ -5,6 +5,7 @@
 package com.googlecode.starrating;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
@@ -29,39 +30,9 @@ public class RemoveButton extends JLabel {
     setBackground(Color.WHITE);
     setPreferredSize(new Dimension(20, 20));
     setIcon(new ImageIcon(getClass().getResource(REMOVE_IMAGE)));
-    addMouseListener(new MouseAdapter() {
-
-      @Override
-      public void mouseEntered(MouseEvent e) {
-        StarRating sr = getSRating();
-        if (sr.isEnabled()) {
-          sr.previewRate(0.0);
-          super.mouseEntered(e);
-        }
-      }
-
-      @Override
-      public void mouseExited(MouseEvent e) {
-        StarRating sr = getSRating();
-        if (sr.isEnabled()) {
-          sr.setRate(sr.getRate());
-          super.mouseExited(e);
-        }
-      }
-
-      @Override
-      public void mouseClicked(MouseEvent e) {
-        StarRating sr = getSRating();
-        if (sr.isEnabled()) {
-          sr.setRate(0.0);
-          sr.previewRate(0.0);
-          super.mouseClicked(e);
-        }
-      }
-    });
+    setCursor(new Cursor(Cursor.HAND_CURSOR));
+    addMouseListener(new StarMouseAdapter(0));
   }
 
-  private StarRating getSRating() {
-    return (StarRating) getParent().getParent();
-  }
+  
 }
