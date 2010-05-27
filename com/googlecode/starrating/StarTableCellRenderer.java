@@ -17,13 +17,14 @@ public class StarTableCellRenderer extends DefaultTableCellRenderer {
   private StarRating rating = new StarRating();
   boolean hasValueLabel;
 
+  StarTableCellRenderer() {
+    this(false,false);
+  }
+
   public StarTableCellRenderer(boolean label, boolean remove) {
     setValueLabelShown(label);
     rating.setRemoveButtonShown(remove);
-  }
-
-  StarTableCellRenderer() {
-    this(false,false);
+    rating.setOpaque(true);
   }
 
   @Override
@@ -32,7 +33,6 @@ public class StarTableCellRenderer extends DefaultTableCellRenderer {
     super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
     if (isSelected) {
       rating.setBackground(table.getSelectionBackground());
-      rating.setOpaque(true);
     } else {
       rating.setBackground(table.getBackground());
     }
