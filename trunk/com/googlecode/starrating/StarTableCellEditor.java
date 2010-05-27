@@ -6,13 +6,9 @@ package com.googlecode.starrating;
 
 import java.awt.Component;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.EventObject;
 import javax.swing.AbstractCellEditor;
 import javax.swing.JTable;
-import javax.swing.event.CellEditorListener;
-import javax.swing.event.ChangeEvent;
 import javax.swing.table.TableCellEditor;
 
 /**
@@ -21,10 +17,9 @@ import javax.swing.table.TableCellEditor;
  */
 public class StarTableCellEditor extends AbstractCellEditor implements TableCellEditor {
 
-  private static final long serialVersionUID = 124253466L;
-  private StarRating rating;
-  private int w;
-  private boolean hasValueLabel;
+  public static final long serialVersionUID = 124253466L;
+  protected StarRating rating;
+  protected boolean hasValueLabel;
 
   public StarTableCellEditor() {
     this(false);
@@ -33,7 +28,6 @@ public class StarTableCellEditor extends AbstractCellEditor implements TableCell
   public StarTableCellEditor(boolean hasValueLabel) {
     super();
     rating = new StarRating();
-    w = rating.getWidth();
     setValueLabelShown(hasValueLabel);
     rating.setRemoveButtonShown(true);
   }
@@ -43,12 +37,12 @@ public class StarTableCellEditor extends AbstractCellEditor implements TableCell
   }
 
   public Object getCellEditorValue() {
-    return getRating().getRate();
+    return rating.getRate();
   }
 
   public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-    getRating().setRate(Double.parseDouble(String.valueOf(value)));
-    return getRating();
+    rating.setRate(Double.parseDouble(String.valueOf(value)));
+    return rating;
   }
 
   @Override
@@ -61,14 +55,8 @@ public class StarTableCellEditor extends AbstractCellEditor implements TableCell
   }
 
   public void setValueLabelShown(boolean b) {
-    getRating().setValueLabelShown(b);
+    rating.setValueLabelShown(b);
     hasValueLabel = b;
   }
-
-  /**
-   * @return the rating
-   */
-  public StarRating getRating() {
-    return rating;
-  }
+ 
 }

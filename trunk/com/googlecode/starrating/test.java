@@ -81,6 +81,8 @@ public class test extends javax.swing.JFrame {
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
     jScrollPane1.setPreferredSize(new java.awt.Dimension(452, 200));
+
+    table.setBackground(new java.awt.Color(255, 204, 204));
     jScrollPane1.setViewportView(table);
 
     javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
@@ -137,7 +139,7 @@ public class test extends javax.swing.JFrame {
     layout.setHorizontalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        .addContainerGap(46, Short.MAX_VALUE)
         .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addContainerGap())
       .addGroup(layout.createSequentialGroup()
