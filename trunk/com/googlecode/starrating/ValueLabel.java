@@ -4,6 +4,7 @@
  */
 package com.googlecode.starrating;
 
+import java.awt.Dimension;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
@@ -18,7 +19,8 @@ public class ValueLabel extends JLabel {
    */
   public ValueLabel() {
     super();
-    setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+    setOpaque(false);
+    setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
   }
 
   /**

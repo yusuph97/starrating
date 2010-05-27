@@ -4,10 +4,13 @@
  */
 package com.googlecode.starrating;
 
+import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -42,7 +45,11 @@ public class Star extends JLabel {
     super();
     this.index = index;
     this.starEnabled = enabled;
+    setBorder(BorderFactory.createEmptyBorder());
+    setPreferredSize(new Dimension(8, 20));
     String image = getImage();
+    setBackground(Color.WHITE);
+    setOpaque(false);
     setIcon(new ImageIcon(getClass().getResource(image)));
     setCursor(new Cursor(Cursor.HAND_CURSOR));
     addMouseListener(new StarMouseAdapter(index));
