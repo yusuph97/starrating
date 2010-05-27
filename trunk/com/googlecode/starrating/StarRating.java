@@ -29,9 +29,11 @@ public class StarRating extends javax.swing.JPanel {
   private int maxRate = 5;
   private Star[] stars = new Star[maxRate*2];
   private ValueLabel valueLabel = new ValueLabel();
+  private RemoveButton removeButton = new RemoveButton();
   private JPanel starPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-  private JPanel editPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+  private JPanel valuePanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
   private boolean valueLabelShown = false;
+  private boolean removeButtonShown = true;
   public static String RATE_CHANGED = "RATE_CHANGED";
 
   /**
@@ -47,7 +49,8 @@ public class StarRating extends javax.swing.JPanel {
   public StarRating(double rate) {
     initComponents();
     starPanel.setOpaque(false);
-    editPanel.setOpaque(false);
+    valuePanel.setOpaque(false);
+    starPanel.add(removeButton);
 
     for (int i = 0; i < stars.length; i++) {
       boolean enabled;
@@ -58,8 +61,9 @@ public class StarRating extends javax.swing.JPanel {
     }
     setRate(rate);
     valueLabel.setValue(rate);
+    
     add(starPanel, BorderLayout.CENTER);
-    add(editPanel, BorderLayout.EAST);
+    add(valuePanel, BorderLayout.EAST);
   }
 
   /** This method is called from within the constructor to
@@ -119,7 +123,7 @@ public class StarRating extends javax.swing.JPanel {
    * Shows the value label should be shown next to the stars
    */
   public void showValueLabel() {
-    editPanel.add(getValueLabel());
+    valuePanel.add(getValueLabel());
     valueLabelShown = true;
   }
 
@@ -127,7 +131,7 @@ public class StarRating extends javax.swing.JPanel {
    * Hides the value label
    */
   public void hideValueLabel() {
-    editPanel.remove(getValueLabel());
+    valuePanel.remove(getValueLabel());
     valueLabelShown = false;
   }
 
@@ -185,8 +189,36 @@ public class StarRating extends javax.swing.JPanel {
   public boolean isValueLabelShown() {
     return valueLabelShown;
   }
+  /**
+   * Gets the remove button
+   * @return The remove button
+   */
+  public RemoveButton getRemoveButton(){
+    return removeButton;
+  }
 
   /**
+   * Set if remove button is shown
+   * @param remove If remove button is shown
+   */
+  public void setRemoveButtonShown(boolean remove){
+    removeButtonShown = remove;
+    if(remove){
+      showRemoveButton();
+    } else {
+      hideRemoveButton();
+    }
+  }
+
+  /**
+   * Gets if remove button is shown
+   * @return If remove button is shown
+   */
+  public boolean isRemoveButtonShown(){
+    return removeButtonShown;
+  }
+
+   /**
    * Sets if the value label is shown
    * @param shown If the value label is shown
    */
@@ -197,6 +229,18 @@ public class StarRating extends javax.swing.JPanel {
       hideValueLabel();
     }
     valueLabelShown = shown;
+  }
+
+  private void hideRemoveButton() {
+    starPanel.remove(removeButton);
+    removeButtonShown = false;
+  }
+
+  private void showRemoveButton() {
+    if(!isRemoveButtonShown()){
+      starPanel.add(removeButton);
+      removeButtonShown = true;
+    }
   }
   // Variables declaration - do not modify//GEN-BEGIN:variables
   // End of variables declaration//GEN-END:variables
