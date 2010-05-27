@@ -74,6 +74,7 @@ public class StarRating extends javax.swing.JPanel {
     setMaximumSize(new java.awt.Dimension(120, 20));
     setMinimumSize(new java.awt.Dimension(100, 20));
     setName("StarRating"); // NOI18N
+    setOpaque(false);
     setPreferredSize(new java.awt.Dimension(120, 20));
     addMouseListener(new java.awt.event.MouseAdapter() {
       public void mouseEntered(java.awt.event.MouseEvent evt) {
