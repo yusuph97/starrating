@@ -19,6 +19,7 @@ public class TableCellStarRenderer extends DefaultTableCellRenderer {
 
   public TableCellStarRenderer(boolean label) {
     setValueLabelShown(label);
+    rating.setRemoveButtonShown(false);
   }
 
   TableCellStarRenderer() {
