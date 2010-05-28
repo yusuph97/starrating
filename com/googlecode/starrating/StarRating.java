@@ -1,61 +1,80 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * StarRating.java
+ * @(#)StarRating.java	28/05/2010
  *
- * Created on 25 Μαϊ 2010, 10:07:25 πμ
+ * Copyright 2010 Spyros Soldatos
  */
 package com.googlecode.starrating;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.event.CellEditorListener;
 
 /**
  * StarRating Class
- * StarRating is a JPanel that holds 10 images of half stars (5 stars in total)
- * The rate ranges from 0.5 to 5.0
- * When a star is clicked a property change event is fired. The properties name is
- * {@link #RATE_CHANGED}.
+ * StarRating is a JPanel that holds images of half stars
+ * The rate ranges from 0 to the number of stars with a step of 0.5.<br />
+ * The rate is shown in the {@link ValueLabel} which can be visible or not<br />
+ * A {@link RemoveButton} (which can be disabled too) sets the rate to 0.0 <br />
+ * When the rate changes a property change event is fired.The properties name
+ * is {@link #RATE_CHANGED}.
+ * A {@link PropertyChangeListener} can be attached to the {@link StarRating} to
+ * perform additional tasks (eg save rate to a database etc)<br />
+ * When {@link StarRating} is used as a cell editor a {@link CellEditorListener}
+ * can be attached to the editor  and listen for {@link CellEditorListener#editingStopped}
+ * to get the {@link StarRating} new value.
  * @author ssoldatos
+ * @since version 0.9
  */
 public class StarRating extends javax.swing.JPanel {
 
+  /** The rate */
   private double rate;
+  /** The maximum rate*/
   private int maxRate;
+  /** An ArrayList holding the StarRating stars */
   private ArrayList<Star> stars;
+  /** The value label */
   private ValueLabel valueLabel;
+  /** The remove button */
   private RemoveButton removeButton;
+  /** If {@link #valueLabel} is shown */
   private boolean valueLabelShown = false;
+  /** If {@link #removeButton} is shown */
   private boolean removeButtonShown = false;
+  /** The property that changes when new rate is set */
   public static String RATE_CHANGED = "RATE_CHANGED";
 
   /**
-   * Creates a default StarRating with a rate of 0
+   * Creates a default StarRating with a {@link #rate} of 0.0 and a
+   * {@link #maxrate} of 5
    */
   public StarRating() {
     this(0.0, 5);
   }
 
+  /**
+   * Creates a StarRating with a initial rate
+   * @param rate The rate
+   */
   public StarRating(double rate) {
     this(rate, 5);
   }
 
+  /**
+   * Creates a StarRating with a maximun rate
+   * @param maxRate The maximum rate
+   */
   public StarRating(int maxRate) {
     this(0.0, maxRate);
   }
 
-  /** Creates a StarRating with the initial rate of rate
+  /** Creates a StarRating with the initial rate and a maximum rate<br />
+   * The {@link #removeButton} is shown by default while the {@link #valuelabel}
+   * is hidden.
    * @param rate The initial rate
-   * @param maxRate 
+   * @param maxRate The maximum rate
    */
   public StarRating(double rate, int maxRate) {
     super();
@@ -103,12 +122,20 @@ public class StarRating extends javax.swing.JPanel {
     setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
   }// </editor-fold>//GEN-END:initComponents
 
+  /**
+   * If {@link StarRating} is enabled the rate is set to 0.0
+   * @param evt The MouseEvent
+   */
   private void formMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseEntered
     if (isRatingEnabled()) {
       clearRate();
     }
   }//GEN-LAST:event_formMouseEntered
 
+  /**
+   * If {@link StarRating} is enabled the rate is unchanged
+   * @param evt The MouseEvent
+   */
   private void formMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseExited
     if (isRatingEnabled()) {
       previewRate(getRate());
@@ -117,7 +144,7 @@ public class StarRating extends javax.swing.JPanel {
 
   /**
    * Sets if StarRating is enabled
-   * @param enabled
+   * @param enabled If rating is enabled
    */
   public void setRatingEnabled(boolean enabled) {
     setEnabled(enabled);
@@ -132,7 +159,7 @@ public class StarRating extends javax.swing.JPanel {
   }
 
   /**
-   * Shows the value label should be shown next to the stars
+   * Shows the value label next to the stars validates and repaints the StarRating
    */
   private void showValueLabel() {
     if (!isValueLabelShown()) {
@@ -144,7 +171,7 @@ public class StarRating extends javax.swing.JPanel {
   }
 
   /**
-   * Hides the value label
+   * Hides the value label validates and repaints the StarRating
    */
   private void hideValueLabel() {
     if (isValueLabelShown()) {
@@ -155,20 +182,27 @@ public class StarRating extends javax.swing.JPanel {
     }
   }
 
+  /**
+   * Clears the rate (disables stars images) without setting the rate
+   */
   void clearRate() {
     for (int i = 0; i < stars.size(); i++) {
       Star star = stars.get(i);
-      star.clearRate();
+      star.disableStar();
     }
   }
 
+  /**
+   * Previews a new rate without setting it
+   * @param rate The new rate
+   */
   void previewRate(double rate) {
     for (int i = 0; i < stars.size(); i++) {
       Star star = stars.get(i);
       if (i < rate * 2) {
-        star.setRate();
+        star.enableStar();
       } else {
-        star.clearRate();
+        star.disableStar();
       }
     }
     valueLabel.setValue(rate);
@@ -183,7 +217,7 @@ public class StarRating extends javax.swing.JPanel {
   }
 
   /**
-   * Sets the rate
+   * Sets the rate and fires a property change to notify listeners
    * @param rate the rate to set
    */
   public void setRate(double rate) {
@@ -252,12 +286,19 @@ public class StarRating extends javax.swing.JPanel {
     valueLabelShown = shown;
   }
 
+  /**
+   * Hide the removeButton validates and repaints the StarRating
+   */
   private void hideRemoveButton() {
     remove(removeButton);
     removeButtonShown = false;
     validate();
+    repaint();
   }
 
+  /**
+   * Shows the removeButton validates and repaints the StarRating
+   */
   private void showRemoveButton() {
     if (!isRemoveButtonShown()) {
       removeButton.setOpaque(false);
@@ -276,6 +317,7 @@ public class StarRating extends javax.swing.JPanel {
   }
 
   /**
+   * Changes the maximum rate
    * @param maxRate the maxRate to set
    */
   public void setMaxRate(int maxRate) {

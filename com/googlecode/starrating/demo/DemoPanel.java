@@ -1,12 +1,7 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * DemoPanel.java
+ * @(#)DemoPanel.java	28/05/2010
  *
- * Created on 28 Μαϊ 2010, 7:23:21 μμ
+ * Copyright 2010 Spyros Soldatos
  */
 package com.googlecode.starrating.demo;
 
@@ -20,8 +15,9 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
+ * The demo panel
  * @author lordovol
+ * @since version 0.9
  */
 public class DemoPanel extends javax.swing.JPanel {
 
@@ -39,6 +35,9 @@ public class DemoPanel extends javax.swing.JPanel {
     table.getColumnModel().getColumn(1).setCellRenderer(rend);
     table.getColumnModel().getColumn(1).setCellEditor(ed);
     table.setRowHeight(22);
+    /**
+     * Adds a CellEditorListener to the CellEditor to receive changes in the cells value
+     */
     ed.addCellEditorListener(new CellEditorListener() {
 
       public void editingStopped(ChangeEvent e) {
@@ -52,6 +51,10 @@ public class DemoPanel extends javax.swing.JPanel {
       }
     });
     srating.setRate(2.5);
+    /**
+     * Adds a PropertyChangeListener to the StarRating and listens for property
+     * {@link StarRating#RATE_CHANGED} change.
+     */
     srating.addPropertyChangeListener(new PropertyChangeListener() {
 
       public void propertyChange(PropertyChangeEvent evt) {
@@ -73,62 +76,62 @@ public class DemoPanel extends javax.swing.JPanel {
   private void initComponents() {
 
     panel = new javax.swing.JPanel();
-    jScrollPane1 = new javax.swing.JScrollPane();
+    scrollPane = new javax.swing.JScrollPane();
     table = new javax.swing.JTable();
     srating = new com.googlecode.starrating.StarRating(0.0, 3);
-    jLabel2 = new javax.swing.JLabel();
-    jLabel3 = new javax.swing.JLabel();
-    jLabel4 = new javax.swing.JLabel();
-    jCheckBox1 = new javax.swing.JCheckBox();
-    jCheckBox2 = new javax.swing.JCheckBox();
-    jLabel1 = new javax.swing.JLabel();
-    jComboBox1 = new javax.swing.JComboBox();
-    jLabel5 = new javax.swing.JLabel();
+    label_title = new javax.swing.JLabel();
+    label_table_title = new javax.swing.JLabel();
+    label_standAlone_title = new javax.swing.JLabel();
+    checkbox_enabled = new javax.swing.JCheckBox();
+    checkbox_label = new javax.swing.JCheckBox();
+    label_maxrate = new javax.swing.JLabel();
+    combo_maxRate = new javax.swing.JComboBox();
+    label_table_hint = new javax.swing.JLabel();
 
-    jScrollPane1.setPreferredSize(new java.awt.Dimension(452, 200));
+    scrollPane.setPreferredSize(new java.awt.Dimension(452, 200));
 
     table.setBackground(new java.awt.Color(255, 204, 204));
-    jScrollPane1.setViewportView(table);
+    scrollPane.setViewportView(table);
 
-    jLabel2.setFont(jLabel2.getFont().deriveFont(jLabel2.getFont().getStyle() | java.awt.Font.BOLD, jLabel2.getFont().getSize()+3));
-    jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-    jLabel2.setText("Star Rating Demo");
+    label_title.setFont(label_title.getFont().deriveFont(label_title.getFont().getStyle() | java.awt.Font.BOLD, label_title.getFont().getSize()+3));
+    label_title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+    label_title.setText("Star Rating Demo");
 
-    jLabel3.setFont(jLabel3.getFont().deriveFont(jLabel3.getFont().getStyle() | java.awt.Font.BOLD));
-    jLabel3.setText("As a TableCellRenderer / Editor");
+    label_table_title.setFont(label_table_title.getFont().deriveFont(label_table_title.getFont().getStyle() | java.awt.Font.BOLD));
+    label_table_title.setText("As a TableCellRenderer / Editor");
 
-    jLabel4.setFont(jLabel4.getFont().deriveFont(jLabel4.getFont().getStyle() | java.awt.Font.BOLD));
-    jLabel4.setText("Stand alone");
+    label_standAlone_title.setFont(label_standAlone_title.getFont().deriveFont(label_standAlone_title.getFont().getStyle() | java.awt.Font.BOLD));
+    label_standAlone_title.setText("Stand alone");
 
-    jCheckBox1.setSelected(srating.isRatingEnabled());
-    jCheckBox1.setText("enabled");
-    jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+    checkbox_enabled.setSelected(srating.isRatingEnabled());
+    checkbox_enabled.setText("enabled");
+    checkbox_enabled.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
-        jCheckBox1ActionPerformed(evt);
+        checkbox_enabledActionPerformed(evt);
       }
     });
 
-    jCheckBox2.setSelected(srating.isValueLabelShown());
-    jCheckBox2.setText("Show label");
-    jCheckBox2.addActionListener(new java.awt.event.ActionListener() {
+    checkbox_label.setSelected(srating.isValueLabelShown());
+    checkbox_label.setText("Show label");
+    checkbox_label.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
-        jCheckBox2ActionPerformed(evt);
+        checkbox_labelActionPerformed(evt);
       }
     });
 
-    jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-    jLabel1.setText("Max Rate :");
+    label_maxrate.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+    label_maxrate.setText("Max Rate :");
 
-    jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "3", "4", "5", "6", "7", "8", "9", "10", "15" }));
-    jComboBox1.setToolTipText("Select the maximum rate");
-    jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+    combo_maxRate.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "3", "4", "5", "6", "7", "8", "9", "10", "15" }));
+    combo_maxRate.setToolTipText("Select the maximum rate");
+    combo_maxRate.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
-        jComboBox1ActionPerformed(evt);
+        combo_maxRateActionPerformed(evt);
       }
     });
 
-    jLabel5.setFont(jLabel5.getFont().deriveFont((jLabel5.getFont().getStyle() | java.awt.Font.ITALIC)));
-    jLabel5.setText("(Double click to edit the rate)");
+    label_table_hint.setFont(label_table_hint.getFont().deriveFont((label_table_hint.getFont().getStyle() | java.awt.Font.ITALIC)));
+    label_table_hint.setText("(Double click to edit the rate)");
 
     javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
     panel.setLayout(panelLayout);
@@ -136,27 +139,27 @@ public class DemoPanel extends javax.swing.JPanel {
       panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(panelLayout.createSequentialGroup()
         .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 482, Short.MAX_VALUE)
+          .addComponent(label_title, javax.swing.GroupLayout.DEFAULT_SIZE, 482, Short.MAX_VALUE)
           .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
             .addContainerGap()
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE))
+            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE))
           .addGroup(panelLayout.createSequentialGroup()
             .addContainerGap()
-            .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(checkbox_enabled, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(jCheckBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(checkbox_label, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(label_maxrate, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(combo_maxRate, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
           .addGroup(panelLayout.createSequentialGroup()
             .addContainerGap()
-            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(label_standAlone_title, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
           .addGroup(panelLayout.createSequentialGroup()
             .addContainerGap()
-            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(label_table_title, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(label_table_hint, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGap(63, 63, 63))
           .addGroup(panelLayout.createSequentialGroup()
             .addContainerGap()
@@ -167,21 +170,21 @@ public class DemoPanel extends javax.swing.JPanel {
       panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(panelLayout.createSequentialGroup()
         .addContainerGap()
-        .addComponent(jLabel2)
+        .addComponent(label_title)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
         .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-          .addComponent(jLabel3)
-          .addComponent(jLabel5))
+          .addComponent(label_table_title)
+          .addComponent(label_table_hint))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addComponent(scrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addGap(18, 18, 18)
-        .addComponent(jLabel4)
+        .addComponent(label_standAlone_title)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-          .addComponent(jCheckBox1)
-          .addComponent(jCheckBox2)
-          .addComponent(jLabel1)
-          .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+          .addComponent(checkbox_enabled)
+          .addComponent(checkbox_label)
+          .addComponent(label_maxrate)
+          .addComponent(combo_maxRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
         .addComponent(srating, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addContainerGap())
@@ -201,32 +204,32 @@ public class DemoPanel extends javax.swing.JPanel {
     );
   }// </editor-fold>//GEN-END:initComponents
 
-    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
-      srating.setEnabled(jCheckBox1.isSelected());
-}//GEN-LAST:event_jCheckBox1ActionPerformed
+    private void checkbox_enabledActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkbox_enabledActionPerformed
+      srating.setEnabled(checkbox_enabled.isSelected());
+}//GEN-LAST:event_checkbox_enabledActionPerformed
 
-    private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
-      srating.setValueLabelShown(jCheckBox2.isSelected());
-}//GEN-LAST:event_jCheckBox2ActionPerformed
+    private void checkbox_labelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkbox_labelActionPerformed
+      srating.setValueLabelShown(checkbox_label.isSelected());
+}//GEN-LAST:event_checkbox_labelActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-      srating.setMaxRate(Integer.parseInt((String) jComboBox1.getSelectedItem()));
+    private void combo_maxRateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_maxRateActionPerformed
+      srating.setMaxRate(Integer.parseInt((String) combo_maxRate.getSelectedItem()));
       srating.validate();
       srating.repaint();
       panel.validate();
       panel.repaint();
-}//GEN-LAST:event_jComboBox1ActionPerformed
+}//GEN-LAST:event_combo_maxRateActionPerformed
   // Variables declaration - do not modify//GEN-BEGIN:variables
-  private javax.swing.JCheckBox jCheckBox1;
-  private javax.swing.JCheckBox jCheckBox2;
-  private javax.swing.JComboBox jComboBox1;
-  private javax.swing.JLabel jLabel1;
-  private javax.swing.JLabel jLabel2;
-  private javax.swing.JLabel jLabel3;
-  private javax.swing.JLabel jLabel4;
-  private javax.swing.JLabel jLabel5;
-  private javax.swing.JScrollPane jScrollPane1;
+  private javax.swing.JCheckBox checkbox_enabled;
+  private javax.swing.JCheckBox checkbox_label;
+  private javax.swing.JComboBox combo_maxRate;
+  private javax.swing.JLabel label_maxrate;
+  private javax.swing.JLabel label_standAlone_title;
+  private javax.swing.JLabel label_table_hint;
+  private javax.swing.JLabel label_table_title;
+  private javax.swing.JLabel label_title;
   private javax.swing.JPanel panel;
+  private javax.swing.JScrollPane scrollPane;
   private com.googlecode.starrating.StarRating srating;
   private javax.swing.JTable table;
   // End of variables declaration//GEN-END:variables

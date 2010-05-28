@@ -1,23 +1,25 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * @(#)Star.java	28/05/2010
+ *
+ * Copyright 2010 Spyros Soldatos
  */
 package com.googlecode.starrating;
 
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 
 /**
- * This is the half of a star
+ * A label acting as a half of a star<br />
+ * Depending on its {@link #index} and {@link #starEnabled} the left/right or
+ * enabled/disabled image is used<br />
+ * The default stars size is 8x20<br />
+ * A {@link StarMouseAdapter} for receiving mouse events
  * @author ssoldatos
+ * @since version 0.9
  */
 public class Star extends JLabel {
 
@@ -37,9 +39,9 @@ public class Star extends JLabel {
   private final boolean starEnabled;
 
   /**
-   * Creates a half star
-   * @param im
-   * @param index
+   * Creates a Star
+   * @param index The star's index.
+   * @param enabled If the star uses the enabled image as it's icon
    */
   Star(final int index, boolean enabled) {
     super();
@@ -52,30 +54,51 @@ public class Star extends JLabel {
     setOpaque(false);
     setIcon(new ImageIcon(getClass().getResource(image)));
     setCursor(new Cursor(Cursor.HAND_CURSOR));
-    addMouseListener(new StarMouseAdapter(index,StarMouseAdapter.STAR));
   }
 
+/**
+ * Adds a {@link StarMouseAdapter} for receiving mouse events
+ */
   void addStarMouseAdapter(){
-    addMouseListener(new StarMouseAdapter(index,StarMouseAdapter.STAR));
+    addMouseListener(new StarMouseAdapter(index));
   }
 
+  /**
+   * Gets the left half star enabled image icon
+   * @return  The image icon
+   */
   public ImageIcon getLeftEnabled() {
     return new ImageIcon(getClass().getResource(LEFT_ENABLED));
   }
 
+  /**
+   * Gets the left half star disabled image icon
+   * @return  The image icon
+   */
   public ImageIcon getLeftDisabled() {
     return new ImageIcon(getClass().getResource(LEFT_DISABLED));
   }
 
+  /**
+   * Gets the right half star enabled image icon
+   * @return  The image icon
+   */
   public ImageIcon getRightEnabled() {
     return new ImageIcon(getClass().getResource(RIGHT_ENABLED));
   }
 
+  /**
+   * Gets the right half star disabled image icon
+   * @return  The image icon
+   */
   public ImageIcon getRightDisabled() {
     return new ImageIcon(getClass().getResource(RIGHT_DISABLED));
   }
 
-  void clearRate() {
+  /**
+   * Sets the star's icon to the disabled one
+   */
+  void disableStar() {
     if (isLeft) {
       setIcon(getLeftDisabled());
     } else {
@@ -83,7 +106,11 @@ public class Star extends JLabel {
     }
   }
 
-  void setRate() {
+
+  /**
+   * Sets the star's icon to the enabled one
+   */
+  void enableStar() {
     if (isLeft) {
       setIcon(getLeftEnabled());
     } else {
@@ -91,6 +118,11 @@ public class Star extends JLabel {
     }
   }
 
+  /**
+   * Gets the stars image depending on it's {@link #index}
+   * and its {@link #starEnabled}
+   * @return the image
+   */
   private String getImage() {
     if (index % 2 == 0) {
       isLeft = true;
