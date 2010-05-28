@@ -1,25 +1,21 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * test.java
+ * @(#)DemoApplication.java	28/05/2010
  *
- * Created on 25 Μαϊ 2010, 10:08:46 πμ
+ * Copyright 2010 Spyros Soldatos
  */
 package com.googlecode.starrating.demo;
 
 import javax.swing.JFrame;
 
 /**
- *
+ * The demo as an application
  * @author ssoldatos
+ * @since version 0.9
  */
-public class test extends javax.swing.JFrame {
+public class DemoApplication extends javax.swing.JFrame {
 
   /** Creates new form test */
-  public test() {
+  public DemoApplication() {
     add(new DemoPanel());
     pack();
     setLocationRelativeTo(null);
@@ -36,7 +32,7 @@ public class test extends javax.swing.JFrame {
     java.awt.EventQueue.invokeLater(new Runnable() {
 
       public void run() {
-        new test();
+        new DemoApplication();
       }
     });
   }

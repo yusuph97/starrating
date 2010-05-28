@@ -1,6 +1,7 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * @(#)StarTableCellEditor.java	28/05/2010
+ *
+ * Copyright 2010 Spyros Soldatos
  */
 package com.googlecode.starrating;
 
@@ -12,8 +13,9 @@ import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
 
 /**
- *
+ * A {@link StarRating} table cell renderer
  * @author ssoldatos
+ * @since version 0.9
  */
 public class StarTableCellEditor extends AbstractCellEditor implements TableCellEditor {
 

@@ -1,6 +1,7 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * @(#)StarTableCellRenderer.java	28/05/2010
+ *
+ * Copyright 2010 Spyros Soldatos
  */
 package com.googlecode.starrating;
 
@@ -9,18 +10,29 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
- *
+ * A {@link StarRating} cell renderer
  * @author ssoldatos
+ * @since version 0.9
  */
 public class StarTableCellRenderer extends DefaultTableCellRenderer {
 
+  /** The {@link StarRating} object */
   private StarRating rating = new StarRating();
-  boolean hasValueLabel;
 
+  /**
+   * Creates a default cell renderer with no {@link ValueLabel} and
+   * no {@link RemoveButton}.
+   */
   StarTableCellRenderer() {
     this(false,false);
   }
 
+  /**
+   * Creates a default renderer and sets if {@link ValueLabel} and
+   * {@link RemoveButton} are shown.
+   * @param label If {@link ValueLabel} should be shown
+   * @param remove If {@link RemoveButton} should be shown.
+   */
   public StarTableCellRenderer(boolean label, boolean remove) {
     setValueLabelShown(label);
     rating.setRemoveButtonShown(remove);
@@ -42,8 +54,11 @@ public class StarTableCellRenderer extends DefaultTableCellRenderer {
     return rating;
   }
 
+  /**
+   * Sets if the {@link ValueLabel} is shown.
+   * @param b
+   */
   public void setValueLabelShown(boolean b) {
     rating.setValueLabelShown(b);
-    hasValueLabel = b;
   }
 }
