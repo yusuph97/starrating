@@ -4,12 +4,15 @@
  */
 
 /*
- * test.java
+ * DemoPanel.java
  *
- * Created on 25 Μαϊ 2010, 10:08:46 πμ
+ * Created on 28 Μαϊ 2010, 7:23:21 μμ
  */
-package com.googlecode.starrating;
+package com.googlecode.starrating.demo;
 
+import com.googlecode.starrating.StarRating;
+import com.googlecode.starrating.StarTableCellEditor;
+import com.googlecode.starrating.StarTableCellRenderer;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.event.CellEditorListener;
@@ -18,14 +21,13 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author ssoldatos
+ * @author lordovol
  */
-public class test extends javax.swing.JFrame {
+public class DemoPanel extends javax.swing.JPanel {
 
-  /** Creates new form test */
-  public test() {
+  /** Creates new form DemoPanel */
+  public DemoPanel() {
     initComponents();
-    setLocationRelativeTo(null);
     DefaultTableModel model = new DefaultTableModel(new String[]{"Title", "Rating"}, 0);
     table.setModel(model);
     model.addRow(new Object[]{"PHP", new Double(3.0)});
@@ -49,11 +51,12 @@ public class test extends javax.swing.JFrame {
         System.out.println("CellEditorListener notified (Editing Cancelled), value: " + s.getValue());
       }
     });
+    srating.setRate(2.5);
     srating.addPropertyChangeListener(new PropertyChangeListener() {
 
       public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals(StarRating.RATE_CHANGED)) {
-          System.out.println("PropertyChangeListener notified (property: "+StarRating.RATE_CHANGED+"), value: " + evt.getNewValue());
+          System.out.println("PropertyChangeListener notified (property: " + StarRating.RATE_CHANGED + "), value: " + evt.getNewValue());
         }
       }
     });
@@ -81,8 +84,6 @@ public class test extends javax.swing.JFrame {
     jLabel1 = new javax.swing.JLabel();
     jComboBox1 = new javax.swing.JComboBox();
     jLabel5 = new javax.swing.JLabel();
-
-    setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
     jScrollPane1.setPreferredSize(new java.awt.Dimension(452, 200));
 
@@ -135,11 +136,10 @@ public class test extends javax.swing.JFrame {
       panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(panelLayout.createSequentialGroup()
         .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addComponent(srating, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-          .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)
+          .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 482, Short.MAX_VALUE)
           .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
             .addContainerGap()
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE))
           .addGroup(panelLayout.createSequentialGroup()
             .addContainerGap()
             .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -154,15 +154,18 @@ public class test extends javax.swing.JFrame {
             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
           .addGroup(panelLayout.createSequentialGroup()
             .addContainerGap()
-            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
+            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGap(63, 63, 63)))
+            .addGap(63, 63, 63))
+          .addGroup(panelLayout.createSequentialGroup()
+            .addContainerGap()
+            .addComponent(srating, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         .addContainerGap())
     );
     panelLayout.setVerticalGroup(
       panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
+      .addGroup(panelLayout.createSequentialGroup()
         .addContainerGap()
         .addComponent(jLabel2)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -184,8 +187,8 @@ public class test extends javax.swing.JFrame {
         .addContainerGap())
     );
 
-    javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-    getContentPane().setLayout(layout);
+    javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+    this.setLayout(layout);
     layout.setHorizontalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addComponent(panel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -196,37 +199,23 @@ public class test extends javax.swing.JFrame {
         .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
-
-    pack();
   }// </editor-fold>//GEN-END:initComponents
 
-  private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
-    srating.setEnabled(jCheckBox1.isSelected());
-  }//GEN-LAST:event_jCheckBox1ActionPerformed
+    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+      srating.setEnabled(jCheckBox1.isSelected());
+}//GEN-LAST:event_jCheckBox1ActionPerformed
 
-  private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
-    srating.setValueLabelShown(jCheckBox2.isSelected());
-  }//GEN-LAST:event_jCheckBox2ActionPerformed
+    private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
+      srating.setValueLabelShown(jCheckBox2.isSelected());
+}//GEN-LAST:event_jCheckBox2ActionPerformed
 
-  private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-    srating.setMaxRate(Integer.parseInt((String) jComboBox1.getSelectedItem()));
-    srating.validate();
-    srating.repaint();
-    panel.validate();
-    panel.repaint();
-  }//GEN-LAST:event_jComboBox1ActionPerformed
-
-  /**
-   * @param args the command line arguments
-   */
-  public static void main(String args[]) {
-    java.awt.EventQueue.invokeLater(new Runnable() {
-
-      public void run() {
-        new test().setVisible(true);
-      }
-    });
-  }
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+      srating.setMaxRate(Integer.parseInt((String) jComboBox1.getSelectedItem()));
+      srating.validate();
+      srating.repaint();
+      panel.validate();
+      panel.repaint();
+}//GEN-LAST:event_jComboBox1ActionPerformed
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JCheckBox jCheckBox1;
   private javax.swing.JCheckBox jCheckBox2;
