@@ -13,11 +13,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 /**
- * A label acting as a half of a star<br />
+ * A  acting as a half of a star<br />
  * Depending on its {@link #index} and {@link #starEnabled} the left/right or
  * enabled/disabled image is used<br />
  * The default stars size is 8x20<br />
- * A {@link StarMouseAdapter} for receiving mouse events
+ * A {@link StarMouseAdapter} can be added for receiving mouse events
  * @author ssoldatos
  * @since version 0.9
  */
@@ -43,7 +43,7 @@ public class Star extends JLabel {
    * @param index The star's index.
    * @param enabled If the star uses the enabled image as it's icon
    */
-  Star(final int index, boolean enabled) {
+  public Star(final int index, boolean enabled) {
     super();
     this.index = index;
     this.starEnabled = enabled;
@@ -59,8 +59,8 @@ public class Star extends JLabel {
 /**
  * Adds a {@link StarMouseAdapter} for receiving mouse events
  */
-  void addStarMouseAdapter(){
-    addMouseListener(new StarMouseAdapter(index));
+  public void addStarMouseAdapter(){
+    addMouseListener(new StarMouseAdapter(this));
   }
 
   /**
@@ -98,7 +98,7 @@ public class Star extends JLabel {
   /**
    * Sets the star's icon to the disabled one
    */
-  void disableStar() {
+  public void disableStar() {
     if (isLeft) {
       setIcon(getLeftDisabled());
     } else {
@@ -110,7 +110,7 @@ public class Star extends JLabel {
   /**
    * Sets the star's icon to the enabled one
    */
-  void enableStar() {
+  public void enableStar() {
     if (isLeft) {
       setIcon(getLeftEnabled());
     } else {
@@ -124,11 +124,18 @@ public class Star extends JLabel {
    * @return the image
    */
   private String getImage() {
-    if (index % 2 == 0) {
+    if (getIndex() % 2 == 0) {
       isLeft = true;
       return starEnabled ? LEFT_ENABLED : LEFT_DISABLED;
     } else {
       return starEnabled ? RIGHT_ENABLED : RIGHT_DISABLED;
     }
+  }
+
+  /**
+   * @return the index
+   */
+  public int getIndex() {
+    return index;
   }
 }

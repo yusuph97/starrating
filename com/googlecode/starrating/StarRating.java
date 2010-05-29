@@ -40,15 +40,15 @@ public class StarRating extends javax.swing.JPanel {
   /** The remove button */
   private RemoveButton removeButton;
   /** If {@link #valueLabel} is shown */
-  private boolean valueLabelShown = false;
+  private boolean valueLabelVisible = false;
   /** If {@link #removeButton} is shown */
-  private boolean removeButtonShown = false;
+  private boolean removeButtonVisible = false;
   /** The property that changes when new rate is set */
   public static String RATE_CHANGED = "RATE_CHANGED";
 
   /**
    * Creates a default StarRating with a {@link #rate} of 0.0 and a
-   * {@link #maxrate} of 5
+   * {@link #maxRate} of 5
    */
   public StarRating() {
     this(0.0, 5);
@@ -71,7 +71,7 @@ public class StarRating extends javax.swing.JPanel {
   }
 
   /** Creates a StarRating with the initial rate and a maximum rate<br />
-   * The {@link #removeButton} is shown by default while the {@link #valuelabel}
+   * The {@link #removeButton} is shown by default while the {@link #valueLabel}
    * is hidden.
    * @param rate The initial rate
    * @param maxRate The maximum rate
@@ -111,14 +111,6 @@ public class StarRating extends javax.swing.JPanel {
     setName("StarRating"); // NOI18N
     setOpaque(false);
     setPreferredSize(new java.awt.Dimension(300, 20));
-    addMouseListener(new java.awt.event.MouseAdapter() {
-      public void mouseEntered(java.awt.event.MouseEvent evt) {
-        formMouseEntered(evt);
-      }
-      public void mouseExited(java.awt.event.MouseEvent evt) {
-        formMouseExited(evt);
-      }
-    });
     setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
   }// </editor-fold>//GEN-END:initComponents
 
@@ -126,22 +118,10 @@ public class StarRating extends javax.swing.JPanel {
    * If {@link StarRating} is enabled the rate is set to 0.0
    * @param evt The MouseEvent
    */
-  private void formMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseEntered
-    if (isRatingEnabled()) {
-      clearRate();
-    }
-  }//GEN-LAST:event_formMouseEntered
-
   /**
    * If {@link StarRating} is enabled the rate is unchanged
    * @param evt The MouseEvent
    */
-  private void formMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseExited
-    if (isRatingEnabled()) {
-      previewRate(getRate());
-    }
-  }//GEN-LAST:event_formMouseExited
-
   /**
    * Sets if StarRating is enabled
    * @param enabled If rating is enabled
@@ -162,9 +142,10 @@ public class StarRating extends javax.swing.JPanel {
    * Shows the value label next to the stars validates and repaints the StarRating
    */
   private void showValueLabel() {
-    if (!isValueLabelShown()) {
+    if (!isValueLabelVisible()) {
       add(getValueLabel(), getComponentCount());
-      valueLabelShown = true;
+      valueLabel.addMouseListener(new StarMouseAdapter(valueLabel));
+      valueLabelVisible = true;
       validate();
       repaint();
     }
@@ -174,9 +155,10 @@ public class StarRating extends javax.swing.JPanel {
    * Hides the value label validates and repaints the StarRating
    */
   private void hideValueLabel() {
-    if (isValueLabelShown()) {
+    if (isValueLabelVisible()) {
       remove(getValueLabel());
-      valueLabelShown = false;
+      valueLabel.removeMouseListener(new StarMouseAdapter(valueLabel));
+      valueLabelVisible = false;
       validate();
       repaint();
     }
@@ -240,8 +222,8 @@ public class StarRating extends javax.swing.JPanel {
    * Gets if value label is shown
    * @return the isValueLabelShown
    */
-  public boolean isValueLabelShown() {
-    return valueLabelShown;
+  public boolean isValueLabelVisible() {
+    return valueLabelVisible;
   }
 
   /**
@@ -256,34 +238,34 @@ public class StarRating extends javax.swing.JPanel {
    * Set if remove button is shown
    * @param remove If remove button is shown
    */
-  public void setRemoveButtonShown(boolean remove) {
+  public void setRemoveButtonVisible(boolean remove) {
     if (remove) {
       showRemoveButton();
     } else {
       hideRemoveButton();
     }
-    removeButtonShown = remove;
+    removeButtonVisible = remove;
   }
 
   /**
    * Gets if remove button is shown
    * @return If remove button is shown
    */
-  public boolean isRemoveButtonShown() {
-    return removeButtonShown;
+  public boolean isRemoveButtonVisible() {
+    return removeButtonVisible;
   }
 
   /**
    * Sets if the value label is shown
    * @param shown If the value label is shown
    */
-  public void setValueLabelShown(boolean shown) {
+  public void setValueLabelVisible(boolean shown) {
     if (shown) {
       showValueLabel();
     } else {
       hideValueLabel();
     }
-    valueLabelShown = shown;
+    valueLabelVisible = shown;
   }
 
   /**
@@ -291,7 +273,8 @@ public class StarRating extends javax.swing.JPanel {
    */
   private void hideRemoveButton() {
     remove(removeButton);
-    removeButtonShown = false;
+    removeButtonVisible = false;
+    removeButton.removeMouseListener(new StarMouseAdapter(removeButton));
     validate();
     repaint();
   }
@@ -300,10 +283,11 @@ public class StarRating extends javax.swing.JPanel {
    * Shows the removeButton validates and repaints the StarRating
    */
   private void showRemoveButton() {
-    if (!isRemoveButtonShown()) {
+    if (!isRemoveButtonVisible()) {
       removeButton.setOpaque(false);
       add(removeButton, 0);
-      removeButtonShown = true;
+      removeButton.addMouseListener(new StarMouseAdapter(removeButton));
+      removeButtonVisible = true;
       validate();
       repaint();
     }

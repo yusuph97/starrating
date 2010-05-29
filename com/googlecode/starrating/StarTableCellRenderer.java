@@ -30,12 +30,12 @@ public class StarTableCellRenderer extends DefaultTableCellRenderer {
   /**
    * Creates a default renderer and sets if {@link ValueLabel} and
    * {@link RemoveButton} are shown.
-   * @param label If {@link ValueLabel} should be shown
-   * @param remove If {@link RemoveButton} should be shown.
+   * @param isValueLabelShown If {@link ValueLabel} should be shown
+   * @param isRemoveButtonShown If {@link RemoveButton} should be shown.
    */
-  public StarTableCellRenderer(boolean label, boolean remove) {
-    setValueLabelShown(label);
-    rating.setRemoveButtonShown(remove);
+  public StarTableCellRenderer(boolean isValueLabelShown, boolean isRemoveButtonShown) {
+    setValueLabelShown(isValueLabelShown);
+    rating.setRemoveButtonVisible(isRemoveButtonShown);
     rating.setOpaque(true);
   }
 
@@ -56,9 +56,9 @@ public class StarTableCellRenderer extends DefaultTableCellRenderer {
 
   /**
    * Sets if the {@link ValueLabel} is shown.
-   * @param b
+   * @param isValueLabelShown
    */
-  public void setValueLabelShown(boolean b) {
-    rating.setValueLabelShown(b);
+  public void setValueLabelShown(boolean isValueLabelShown) {
+    rating.setValueLabelVisible(isValueLabelShown);
   }
 }

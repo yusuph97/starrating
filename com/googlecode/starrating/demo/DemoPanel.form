@@ -171,7 +171,7 @@
         <Component class="javax.swing.JCheckBox" name="checkbox_label">
           <Properties>
             <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="srating.isValueLabelShown()" type="code"/>
+              <Connection code="srating.isValueLabelVisible()" type="code"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Show label"/>
           </Properties>

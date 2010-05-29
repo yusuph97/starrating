@@ -16,13 +16,13 @@ import javax.swing.JLabel;
 public class ValueLabel extends JLabel {
 
   /**
-   * Creates a default value label
+   * Creates a default {@link ValueLabel}
    */
   public ValueLabel() {
   }
 
   /**
-   * Creates a {@link ValueLabel} with a default text
+   * Creates a {@link ValueLabel} and sets it's text to rate
    * @param rate The rate
    */
   public ValueLabel(double rate) {

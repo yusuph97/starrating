@@ -12,9 +12,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 /**
- * A label that acts like a buttonn for clearing the rate (sets it to 0.0)
+ * A {@link JLabel} that acts like a button for clearing the rate (sets it to 0.0)
  * The label has a default size of 20x20 with an empty border<br />
- * A {@link StarMouseAdapter} is added for receiving mouse events
+ * A {@link StarMouseAdapter} can be added for receiving mouse events
  * @author ssoldatos
  * @since version 0.9
  */
@@ -26,7 +26,7 @@ public class RemoveButton extends JLabel {
   public static String REMOVE_IMAGE_DISABLED = "images/remove_d.png";
 
   /**
-   * Creates a RemoveButton <br />
+   * Creates a RemoveButton
    */
   public RemoveButton() {
     super();
@@ -34,7 +34,6 @@ public class RemoveButton extends JLabel {
     setPreferredSize(new Dimension(20, 20));
     setIcon(new ImageIcon(getClass().getResource(REMOVE_IMAGE_DISABLED)));
     setCursor(new Cursor(Cursor.HAND_CURSOR));
-    addMouseListener(new StarMouseAdapter(-1));
     setOpaque(false);
   }
 
