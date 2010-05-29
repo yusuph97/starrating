@@ -7,7 +7,6 @@ package com.googlecode.starrating;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
@@ -21,7 +20,7 @@ import javax.swing.JTable;
 class StarMouseAdapter extends MouseAdapter {
 
   /** The source object's index if it's a {@link Star} or -1 if the source is a
-   * {@link RemoveButton}  */
+   * {@link RemoveButton} or {@link ValueLabel} */
   private int index = -1;
   /** The {@link #sourceType} for a {@link Star} source  */
   static int STAR = 0;
@@ -69,6 +68,8 @@ class StarMouseAdapter extends MouseAdapter {
    * white and opaque to true<br />
    * If source is {@link RemoveButton} sets it's icon to the enabled one and
    * the {@link ValueLabel} text to 0.0
+   * If the source is a {@link Star} it sets the {@link ValueLabel} text according
+   * to the {@link Star} index
    */
   @Override
   public void mouseEntered(MouseEvent e) {
@@ -89,7 +90,7 @@ class StarMouseAdapter extends MouseAdapter {
   /**
    * If {@link StarRating} rating is enabled it sets it's opaque to false<br />
    * If source is {@link RemoveButton} sets it's icon to the disabled one and
-   * previews the {@link ValueLabel} text to the {@link StarRating} rate
+   * sets the {@link ValueLabel} text to the {@link StarRating} rate
    */
   @Override
   public void mouseExited(MouseEvent e) {

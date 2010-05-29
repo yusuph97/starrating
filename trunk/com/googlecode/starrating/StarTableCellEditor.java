@@ -13,15 +13,16 @@ import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
 
 /**
- * A {@link StarRating} table cell renderer
+ * A {@link StarRating} table cell editor
  * @author ssoldatos
  * @since version 0.9
  */
 public class StarTableCellEditor extends AbstractCellEditor implements TableCellEditor {
 
-  public static final long serialVersionUID = 124253466L;
+  /** The editors {@link StarRating} object */
   protected StarRating rating;
-  protected boolean hasValueLabel;
+  /** If the editor has a {@link ValueLabel} */
+  private boolean valueLabelVisible;
 
   public StarTableCellEditor() {
     this(false);
@@ -31,7 +32,7 @@ public class StarTableCellEditor extends AbstractCellEditor implements TableCell
     super();
     rating = new StarRating();
     setValueLabelShown(hasValueLabel);
-    rating.setRemoveButtonShown(true);
+    rating.setRemoveButtonVisible(true);
   }
 
   public double getValue(){
@@ -56,9 +57,23 @@ public class StarTableCellEditor extends AbstractCellEditor implements TableCell
     return false;
   }
 
-  public void setValueLabelShown(boolean b) {
-    rating.setValueLabelShown(b);
-    hasValueLabel = b;
+  public void setValueLabelShown(boolean valueLabelVisible) {
+    rating.setValueLabelVisible(valueLabelVisible);
+    setValueLabelVisible(valueLabelVisible);
+  }
+
+  /**
+   * @return the hasValueLabel
+   */
+  public boolean isValueLabelVisible() {
+    return valueLabelVisible;
+  }
+
+  /**
+   * @param hasValueLabel the hasValueLabel to set
+   */
+  public void setValueLabelVisible(boolean hasValueLabel) {
+    this.valueLabelVisible = hasValueLabel;
   }
  
 }

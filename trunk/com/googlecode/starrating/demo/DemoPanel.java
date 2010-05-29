@@ -111,7 +111,7 @@ public class DemoPanel extends javax.swing.JPanel {
       }
     });
 
-    checkbox_label.setSelected(srating.isValueLabelShown());
+    checkbox_label.setSelected(srating.isValueLabelVisible());
     checkbox_label.setText("Show label");
     checkbox_label.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -209,7 +209,7 @@ public class DemoPanel extends javax.swing.JPanel {
 }//GEN-LAST:event_checkbox_enabledActionPerformed
 
     private void checkbox_labelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkbox_labelActionPerformed
-      srating.setValueLabelShown(checkbox_label.isSelected());
+      srating.setValueLabelVisible(checkbox_label.isSelected());
 }//GEN-LAST:event_checkbox_labelActionPerformed
 
     private void combo_maxRateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_maxRateActionPerformed
