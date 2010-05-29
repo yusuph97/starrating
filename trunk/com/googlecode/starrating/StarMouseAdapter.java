@@ -6,6 +6,8 @@
 package com.googlecode.starrating;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
@@ -20,25 +22,46 @@ class StarMouseAdapter extends MouseAdapter {
 
   /** The source object's index if it's a {@link Star} or -1 if the source is a
    * {@link RemoveButton}  */
-  private final int index;
+  private int index = -1;
   /** The {@link #sourceType} for a {@link Star} source  */
   static int STAR = 0;
   /** The {@link #sourceType} for a {@link RemoveButton} source  */
   static int REMOVE_BUTTON = 1;
+  /** The {@link #sourceType} for {@link ValueLabel}   source   */
+  static int VALUE_LABEL = 2;
   /** The event's source type:<br />
    *           <code>STAR</code>,
-   *           <code>REMOVE_BUTTON</code>,*/
-  private final int sourceType;
+   *           <code>REMOVE_BUTTON</code>,
+   *           <code>VALUE_LABEL</code>,
+   */
+  private int sourceType = REMOVE_BUTTON;
+  /** The component that originated the mouse event */
+  private Component source;
+  /** The {@link StarRating} that the source component belongs */
+  private StarRating starRating;
 
   /**
-   * Creates a {@link StarMouseAdapter} for a {@link Star} with an index of
-   * {@link #index}<br />
-   * If index is -1 the source is a {@link RemoveButton} else it's a {@link Star}
-   * @param index
+   * Creates a {@link StarMouseAdapter} for a component that can be a {@link Star}
+   * or a {@link RemoveButton} or a {@link ValueLabel}
+   * If the component is not of one of these types an IllegalArgument exception is thrown
+   * @param source The source component of this event
    */
-  public StarMouseAdapter(int index) {
-    this.index = index;
-    this.sourceType = index == -1 ? REMOVE_BUTTON : STAR;
+  public StarMouseAdapter(Component source) {
+    this.source = source;
+    if (source instanceof Star) {
+      Star star = (Star) source;
+      this.index = star.getIndex();
+      this.sourceType = STAR;
+    } else if (source instanceof RemoveButton) {
+      this.index = -1;
+      this.sourceType = REMOVE_BUTTON;
+    } else if (source instanceof ValueLabel) {
+      this.index = -1;
+      this.sourceType = VALUE_LABEL;
+    } else {
+      throw new IllegalArgumentException("Wrong source component, must be a Star, ValueLabel or RemoveButton");
+    }
+    this.starRating = (StarRating) source.getParent();
   }
 
   /**
@@ -49,15 +72,16 @@ class StarMouseAdapter extends MouseAdapter {
    */
   @Override
   public void mouseEntered(MouseEvent e) {
-    StarRating sr = processEvent(e);
-    if (sr.isEnabled()) {
-      sr.setBackground(Color.WHITE);
-      sr.setOpaque(true);
+    if (starRating.isEnabled()) {
+      starRating.setBackground(Color.WHITE);
+      starRating.setOpaque(true);
       if (sourceType == REMOVE_BUTTON) {
         RemoveButton removeButton = (RemoveButton) e.getSource();
         removeButton.setIcon(new ImageIcon(getClass().getResource(RemoveButton.REMOVE_IMAGE)));
+        starRating.previewRate((double) (index + 1) / 2);
+      } else if(sourceType == STAR){
+        starRating.previewRate((double) (index + 1) / 2);
       }
-      sr.previewRate((double) (index + 1) / 2);
       super.mouseEntered(e);
     }
   }
@@ -69,15 +93,14 @@ class StarMouseAdapter extends MouseAdapter {
    */
   @Override
   public void mouseExited(MouseEvent e) {
-    StarRating sr = processEvent(e);
-    if (sr.isEnabled()) {
+    if (starRating.isEnabled()) {
       //sr.setBackground(sr.getParent().getBackground());
-      sr.setOpaque(false);
+      starRating.setOpaque(false);
       if (sourceType == REMOVE_BUTTON) {
         RemoveButton removeButton = (RemoveButton) e.getSource();
         removeButton.setIcon(new ImageIcon(getClass().getResource(RemoveButton.REMOVE_IMAGE_DISABLED)));
       }
-      sr.setRate(sr.getRate());
+      starRating.setRate(starRating.getRate());
       super.mouseExited(e);
     }
   }
@@ -90,30 +113,14 @@ class StarMouseAdapter extends MouseAdapter {
    */
   @Override
   public void mouseClicked(MouseEvent e) {
-    StarRating sr = processEvent(e);
-    if (sr.isEnabled()) {
-      sr.setRate((double) (index + 1) / 2);
-      sr.previewRate((double) (index + 1) / 2);
-      if (sr.getParent() instanceof JTable) {
-        JTable table = (JTable) sr.getParent();
+    if (starRating.isEnabled() && sourceType != VALUE_LABEL) {
+      starRating.setRate((double) (index + 1) / 2);
+      starRating.previewRate((double) (index + 1) / 2);
+      if (starRating.getParent() instanceof JTable) {
+        JTable table = (JTable) starRating.getParent();
         table.getCellEditor().stopCellEditing();
       }
       super.mouseClicked(e);
     }
-  }
-
-  /**
-   * Proccesses the event and gets the {@link StarRating} that originated the event
-   * @param event The Mouse event
-   */
-  private StarRating processEvent(MouseEvent event) {
-    if (sourceType == STAR) {
-      Star star = (Star) event.getSource();
-      return  (StarRating) star.getParent();
-    } else if (sourceType == REMOVE_BUTTON) {
-      RemoveButton removeButton = (RemoveButton) event.getSource();
-      return (StarRating) removeButton.getParent();
-    }
-    return null;
   }
 }
