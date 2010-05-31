@@ -99,7 +99,7 @@ class StarMouseAdapter extends MouseAdapter {
       starRating.setOpaque(false);
       if (sourceType == REMOVE_BUTTON) {
         RemoveButton removeButton = (RemoveButton) e.getSource();
-        removeButton.setIcon(new ImageIcon(getClass().getResource(RemoveButton.REMOVE_IMAGE_DISABLED)));
+        removeButton.setIcon(removeButton.getDisabledIcon());
       }
       starRating.setRate(starRating.getRate());
       super.mouseExited(e);
