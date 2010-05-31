@@ -5,9 +5,16 @@
  */
 package com.googlecode.starrating;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -21,100 +28,70 @@ import javax.swing.JLabel;
  * @author ssoldatos
  * @since version 0.9
  */
-public class Star extends JLabel {
+public class Star extends JLabel{
 
   /** The stars index */
   private final int index;
   /** If it's the left half of the star or not */
   private boolean isLeft;
-  /** The left star enabled image */
-  public static String LEFT_ENABLED = "images/ls.png";
-  /** The left star disabled image */
-  public static String LEFT_DISABLED = "images/ls_d.png";
-  /** The right star enabled image */
-  public static String RIGHT_ENABLED = "images/rs.png";
-  /** The right star disabled image */
-  public static String RIGHT_DISABLED = "images/rs_d.png";
   /** If the image is the enabled one */
-  private final boolean starEnabled;
+  private boolean starEnabled;
+  /** The buffered image of the star **/
+  private BufferedImage starBuffImage;
+  /** The transparency of the disabled image **/
+  private float transperancy = 0.2F;
+  /** The Url of the star image **/
+  private URL url;
+  private int IMAGE_HEIGHT = 16;
+  private URL starImage;
 
   /**
    * Creates a Star
    * @param index The star's index.
    * @param enabled If the star uses the enabled image as it's icon
+   * @param starImage The URL of the star image to use
    */
-  public Star(final int index, boolean enabled) {
+  Star(final int index, boolean enabled, URL starImage) {
     super();
     this.index = index;
     this.starEnabled = enabled;
+    this.starImage = starImage;
+    setIcon(starImage);
     setBorder(BorderFactory.createEmptyBorder());
     setPreferredSize(new Dimension(8, 20));
-    String image = getImage();
     setBackground(Color.WHITE);
     setOpaque(false);
-    setIcon(new ImageIcon(getClass().getResource(image)));
     setCursor(new Cursor(Cursor.HAND_CURSOR));
   }
 
-/**
- * Adds a {@link StarMouseAdapter} for receiving mouse events
- */
-  public void addStarMouseAdapter(){
+  /**
+   * Adds a {@link StarMouseAdapter} for receiving mouse events
+   */
+  public void addStarMouseAdapter() {
     addMouseListener(new StarMouseAdapter(this));
-  }
-
-  /**
-   * Gets the left half star enabled image icon
-   * @return  The image icon
-   */
-  public ImageIcon getLeftEnabled() {
-    return new ImageIcon(getClass().getResource(LEFT_ENABLED));
-  }
-
-  /**
-   * Gets the left half star disabled image icon
-   * @return  The image icon
-   */
-  public ImageIcon getLeftDisabled() {
-    return new ImageIcon(getClass().getResource(LEFT_DISABLED));
-  }
-
-  /**
-   * Gets the right half star enabled image icon
-   * @return  The image icon
-   */
-  public ImageIcon getRightEnabled() {
-    return new ImageIcon(getClass().getResource(RIGHT_ENABLED));
-  }
-
-  /**
-   * Gets the right half star disabled image icon
-   * @return  The image icon
-   */
-  public ImageIcon getRightDisabled() {
-    return new ImageIcon(getClass().getResource(RIGHT_DISABLED));
   }
 
   /**
    * Sets the star's icon to the disabled one
    */
   public void disableStar() {
+    starEnabled = false;
     if (isLeft) {
-      setIcon(getLeftDisabled());
+      setIcon(new ImageIcon(getSplittedImage(0, false)));
     } else {
-      setIcon(getRightDisabled());
+      setIcon(new ImageIcon(getSplittedImage(1, false)));
     }
   }
-
 
   /**
    * Sets the star's icon to the enabled one
    */
   public void enableStar() {
+    starEnabled = true;
     if (isLeft) {
-      setIcon(getLeftEnabled());
+      setIcon(new ImageIcon(getSplittedImage(0, true)));
     } else {
-      setIcon(getRightEnabled());
+      setIcon(new ImageIcon(getSplittedImage(1, true)));
     }
   }
 
@@ -123,12 +100,12 @@ public class Star extends JLabel {
    * and its {@link #starEnabled}
    * @return the image
    */
-  private String getImage() {
+  private BufferedImage getImage() {
     if (getIndex() % 2 == 0) {
       isLeft = true;
-      return starEnabled ? LEFT_ENABLED : LEFT_DISABLED;
+      return starEnabled ? getSplittedImage(0, true) : getSplittedImage(0, false);
     } else {
-      return starEnabled ? RIGHT_ENABLED : RIGHT_DISABLED;
+      return starEnabled ? getSplittedImage(1, true) : getSplittedImage(1, false);
     }
   }
 
@@ -137,5 +114,62 @@ public class Star extends JLabel {
    */
   public int getIndex() {
     return index;
+  }
+
+  private BufferedImage getSplittedImage(int index, boolean opaque) {
+    int w = starBuffImage.getWidth() / 2;
+    int h = starBuffImage.getHeight() / 1;
+    int num = 0;
+    BufferedImage img;
+    for (int y = 0; y < 2; y++) {
+      for (int x = 0; x < 2; x++) {
+        if (num == index) {
+          img = new BufferedImage(w, h, BufferedImage.TRANSLUCENT);
+          // Tell the graphics to draw only one block of the image
+          Graphics2D g = img.createGraphics();
+          if (!opaque) {
+            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, transperancy));
+            g.drawImage(img, null, 0, 0);
+          }
+          g.drawImage(starBuffImage, 0, 0, w, h, w * x, h * y, w * x + w, h * y + h, null);
+          g.dispose();
+          return img;
+        }
+        num++;
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * @return the starImage
+   */
+  public URL getStarImage() {
+    return starImage;
+  }
+
+  /**
+   * @param starImage the starImage to set
+   */
+  public void setStarImage(URL starImage) {
+    setIcon(starImage);
+  }
+
+  private void setIcon(URL starImage) {
+    try {
+      starBuffImage = ImageIO.read(starImage);
+    } catch (IOException ex1) {
+      url = Star.class.getResource(StarRating.STAR_IMAGE);
+      try {
+        starBuffImage = ImageIO.read(url);
+      } catch (IOException ex) {
+      }
+    }
+    starBuffImage = StarRating.resizeImage(starBuffImage, IMAGE_HEIGHT);
+    BufferedImage image = getImage();
+    setIcon(new ImageIcon(image));
+    validate();
+    repaint();
   }
 }

@@ -22,8 +22,6 @@ public class RemoveButton extends JLabel {
 
   /** The label's icon enabled image */
   public static String REMOVE_IMAGE = "images/remove.png";
-  /** The label's icon disabled image */
-  public static String REMOVE_IMAGE_DISABLED = "images/remove_d.png";
 
   /**
    * Creates a RemoveButton
@@ -32,7 +30,8 @@ public class RemoveButton extends JLabel {
     super();
     setBorder(BorderFactory.createEmptyBorder());
     setPreferredSize(new Dimension(20, 20));
-    setIcon(new ImageIcon(getClass().getResource(REMOVE_IMAGE_DISABLED)));
+    setIcon(new ImageIcon(getClass().getResource("images/remove.png")));
+    setIcon(getDisabledIcon());
     setCursor(new Cursor(Cursor.HAND_CURSOR));
     setOpaque(false);
   }
