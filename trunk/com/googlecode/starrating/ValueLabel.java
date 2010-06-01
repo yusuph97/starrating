@@ -5,7 +5,7 @@
  */
 package com.googlecode.starrating;
 
-import java.awt.Color;
+import java.awt.Dimension;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -15,7 +15,8 @@ import javax.swing.SwingConstants;
  * @author lordovol
  * @since version 0.9
  */
-public class ValueLabel extends JLabel {
+public class ValueLabel extends JLabel implements StarRatingConstants {
+  private static final long serialVersionUID = 2354563464567L;
 
   /**
    * Creates a default {@link ValueLabel}
@@ -30,9 +31,10 @@ public class ValueLabel extends JLabel {
   public ValueLabel(double rate) {
     super();
     setOpaque(false);
-    setBorder(BorderFactory.createEmptyBorder(2, 10, 2, 0));
+    setBorder(BorderFactory.createEmptyBorder(0, LABEL_GAP, 0, 0));
     setHorizontalAlignment(SwingConstants.RIGHT);
     setValue(rate);
+    setPreferredSize(new Dimension(LABEL_WIDTH + LABEL_GAP, STAR_RATING_HEIGHT));
   }
 
   /**

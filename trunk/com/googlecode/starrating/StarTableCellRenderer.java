@@ -17,6 +17,7 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class StarTableCellRenderer extends DefaultTableCellRenderer {
 
+  private static final long serialVersionUID = 23525346L;
   /** The {@link StarRating} object */
   private StarRating rating = new StarRating();
 
@@ -25,7 +26,7 @@ public class StarTableCellRenderer extends DefaultTableCellRenderer {
    * no {@link RemoveButton}.
    */
   StarTableCellRenderer() {
-    this(false,false);
+    this(false, false);
   }
 
   /**
@@ -43,7 +44,7 @@ public class StarTableCellRenderer extends DefaultTableCellRenderer {
 
   @Override
   public Component getTableCellRendererComponent(JTable table,
-          Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+      Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
     if (isSelected) {
       rating.setBackground(table.getSelectionBackground());

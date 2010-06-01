@@ -28,7 +28,7 @@ import javax.swing.JLabel;
  * @author ssoldatos
  * @since version 0.9
  */
-public class Star extends JLabel{
+public class Star extends JLabel implements StarRatingConstants{
 
   /** The stars index */
   private final int index;
@@ -38,11 +38,8 @@ public class Star extends JLabel{
   private boolean starEnabled;
   /** The buffered image of the star **/
   private BufferedImage starBuffImage;
-  /** The transparency of the disabled image **/
-  private float transperancy = 0.2F;
   /** The Url of the star image **/
   private URL url;
-  private int IMAGE_HEIGHT = 16;
   private URL starImage;
 
   /**
@@ -58,12 +55,12 @@ public class Star extends JLabel{
     this.starImage = starImage;
     setIcon(starImage);
     setBorder(BorderFactory.createEmptyBorder());
-    setPreferredSize(new Dimension(8, 20));
+    setPreferredSize(new Dimension(STAR_IMAGE_WIDTH, STAR_RATING_HEIGHT));
     setOpaque(false);
     setCursor(new Cursor(Cursor.HAND_CURSOR));
   }
 
-  /**
+   /**
    * Adds a {@link StarMouseAdapter} for receiving mouse events
    */
   public void addStarMouseAdapter() {
@@ -127,7 +124,7 @@ public class Star extends JLabel{
           // Tell the graphics to draw only one block of the image
           Graphics2D g = img.createGraphics();
           if (!opaque) {
-            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, transperancy));
+            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, TRANSPARENCY));
             g.drawImage(img, null, 0, 0);
           }
           g.drawImage(starBuffImage, 0, 0, w, h, w * x, h * y, w * x + w, h * y + h, null);
@@ -165,7 +162,7 @@ public class Star extends JLabel{
       } catch (IOException ex) {
       }
     }
-    starBuffImage = StarRating.resizeImage(starBuffImage, IMAGE_HEIGHT);
+    starBuffImage = StarRating.resizeImage(starBuffImage, STAR_IMAGE_HEIGHT);
     BufferedImage image = getImage();
     setIcon(new ImageIcon(image));
     validate();

@@ -118,8 +118,7 @@ public class StarRating extends javax.swing.JPanel implements StarRatingConstant
       stars.get(i).setBackground(getBackground());
     }
     setRate(rate);
-    showRemoveButton();
-    setPreferredSize(new Dimension(maxRate * 20 + 40, 20));
+    setSize();
     setOpaque(false);
     addMouseListener(new StarMouseAdapter(this));
   }
@@ -259,7 +258,7 @@ public class StarRating extends javax.swing.JPanel implements StarRatingConstant
    * Set if remove button is shown
    * @param remove If remove button is shown
    */
-  public void setRemoveButtonVisible(boolean remove) {
+  void setRemoveButtonVisible(boolean remove) {
     if (remove) {
       showRemoveButton();
     } else {
@@ -341,7 +340,7 @@ public class StarRating extends javax.swing.JPanel implements StarRatingConstant
         setRate(maxRate);
       }
     }
-    setPreferredSize(new Dimension(maxRate * 20 + 40, getHeight()));
+    setSize();
     validate();
     repaint();
     this.maxRate = maxRate;
@@ -390,6 +389,14 @@ public class StarRating extends javax.swing.JPanel implements StarRatingConstant
    */
   private URL getUrlStarImage() {
     return urlStarImage;
+  }
+
+  private void setSize() {
+    int width = (int)(stars.size() * STAR_IMAGE_WIDTH +
+        LABEL_WIDTH + LABEL_GAP +
+        removeButton.getPreferredSize().getWidth() + REMOVE_BUTTON_GAP);
+    System.out.println(width);
+    setPreferredSize(new Dimension(width,STAR_RATING_HEIGHT));
   }
   // Variables declaration - do not modify//GEN-BEGIN:variables
   // End of variables declaration//GEN-END:variables
