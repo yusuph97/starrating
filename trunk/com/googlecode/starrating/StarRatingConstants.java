@@ -10,7 +10,7 @@ package com.googlecode.starrating;
  * @author lordovol
  * @since version 1.0
  */
-public interface StarsConstants {
+public interface StarRatingConstants {
 
   /** The star image **/
   String STAR_IMAGE = "images/star.png";
@@ -24,4 +24,6 @@ public interface StarsConstants {
   String WHITE_STAR_IMAGE = "images/whiteStar.png";
   /** The property that changes when new rate is set */
   String RATE_CHANGED = "RATE_CHANGED";
+  /** The remove button **/
+  String REMOVE_IMAGE = "images/remove.png";
 }

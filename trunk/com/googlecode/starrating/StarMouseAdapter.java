@@ -7,6 +7,7 @@ package com.googlecode.starrating;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
@@ -29,27 +30,31 @@ class StarMouseAdapter extends MouseAdapter {
   static int REMOVE_BUTTON = 1;
   /** The {@link #sourceType} for {@link ValueLabel}   source   */
   static int VALUE_LABEL = 2;
+  /** The {@link #sourceType} for {@link ValueLabel}   source   */
+  static int STARRATING = 3;
   /** The event's source type:<br />
    *           <code>STAR</code>,
    *           <code>REMOVE_BUTTON</code>,
    *           <code>VALUE_LABEL</code>,
+   *           <code>STARRATING</code>,
    */
   private int sourceType = REMOVE_BUTTON;
-  /** The component that originated the mouse event */
-  private Component source;
   /** The {@link StarRating} that the source component belongs */
   private StarRating starRating;
   /** If starrating is a table editor **/
   private boolean isTableEditor;
+  /** If rating is enabled **/
+  private boolean enabledStatus;
 
   /**
-   * Creates a {@link StarMouseAdapter} for a component that can be a {@link Star}
-   * or a {@link RemoveButton} or a {@link ValueLabel}
+   * Creates a {@link StarMouseAdapter} to receive mouse events from a component
+   * that can be a {@link Star}, a {@link RemoveButton}, a {@link ValueLabel} or
+   * a {@link StarRating}<br />
    * If the component is not of one of these types an IllegalArgument exception is thrown
    * @param source The source component of this event
    */
   public StarMouseAdapter(Component source) {
-    this.source = source;
+    this.starRating = (StarRating) source.getParent();
     if (source instanceof Star) {
       Star star = (Star) source;
       this.index = star.getIndex();
@@ -60,24 +65,21 @@ class StarMouseAdapter extends MouseAdapter {
     } else if (source instanceof ValueLabel) {
       this.index = -1;
       this.sourceType = VALUE_LABEL;
-    } else {
-      throw new IllegalArgumentException("Wrong source component, must be a Star, ValueLabel or RemoveButton");
-    }
-    this.starRating = (StarRating) source.getParent();
+    } else if (source instanceof StarRating) {
+      this.starRating = (StarRating) source;
+      this.index = -1;
+      this.sourceType = STARRATING;
 
+    } else {
+      throw new IllegalArgumentException("Wrong source component, must be a "
+          + "Star, ValueLabel, RemoveButton or StarRating");
+    }
   }
 
-  /**
-   * If {@link StarRating} rating is enabled it sets it's background color to
-   * white and opaque to true<br />
-   * If source is {@link RemoveButton} sets it's icon to the enabled one and
-   * the {@link ValueLabel} text to 0.0
-   * If the source is a {@link Star} it sets the {@link ValueLabel} text according
-   * to the {@link Star} index
-   */
   @Override
   public void mouseEntered(MouseEvent e) {
-    if (starRating.isEnabled()) {
+    enabledStatus = starRating.isRatingEnabled();
+    if (starRating.isEnabled() && starRating.isEditing) {
       if (starRating.getParent() instanceof JTable) {
         isTableEditor = true;
       }
@@ -87,7 +89,6 @@ class StarMouseAdapter extends MouseAdapter {
       } else {
         this.starRating.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
       }
-      this.starRating.setBackground(Color.WHITE);
       if (sourceType == REMOVE_BUTTON) {
         RemoveButton removeButton = (RemoveButton) e.getSource();
         removeButton.setIcon(new ImageIcon(getClass().getResource(RemoveButton.REMOVE_IMAGE)));
@@ -99,14 +100,13 @@ class StarMouseAdapter extends MouseAdapter {
     }
   }
 
-  /**
-   * If {@link StarRating} rating is enabled it sets it's opaque to false<br />
-   * If source is {@link RemoveButton} sets it's icon to the disabled one and
-   * sets the {@link ValueLabel} text to the {@link StarRating} rate
-   */
   @Override
   public void mouseExited(MouseEvent e) {
-    if (starRating.isEnabled()) {
+    if (mouseLeftStarRating(e)) {
+      starRating.setRatingEnabled(enabledStatus);
+      starRating.isEditing = true;
+    }
+    if (starRating.isEnabled() && starRating.isEditing) {
       starRating.setOpaque(false);
       if (!isTableEditor) {
         this.starRating.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -123,15 +123,9 @@ class StarMouseAdapter extends MouseAdapter {
     }
   }
 
-  /**
-   * If {@link StarRating} rating is enabled it sets the {@link StarRating} rate
-   * and the {@link ValueLabel} text to the one selected.<br />
-   * If {@link StarRating} is used as a {@link StarTableCellEditor} it stops the
-   * cell editing by calling {@link StarTableCellEditor#stopCellEditing()}
-   */
   @Override
   public void mouseClicked(MouseEvent e) {
-    if (starRating.isEnabled() && sourceType != VALUE_LABEL) {
+    if (starRating.isEnabled() && sourceType != VALUE_LABEL && starRating.isEditing) {
       starRating.setRate((double) (index + 1) / 2);
       starRating.previewRate((double) (index + 1) / 2);
       if (!isTableEditor) {
@@ -140,11 +134,33 @@ class StarMouseAdapter extends MouseAdapter {
         this.starRating.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
       }
       this.starRating.setOpaque(false);
+
       if (isTableEditor) {
         JTable table = (JTable) starRating.getParent();
         table.getCellEditor().stopCellEditing();
+      } else {
+        starRating.isEditing = false;
       }
       super.mouseClicked(e);
     }
+  }
+
+  /**
+   * Checks if the mouse has left the {@link StarRating} area.
+   * @param e The mouse event
+   * @return True is mouse is outside the {@link StarRating} bounds
+   */
+  private boolean mouseLeftStarRating(MouseEvent e) {
+    Point p = e.getLocationOnScreen();
+    double mouseX = p.getX();
+    double mouseY = p.getY();
+    Point srP = starRating.getLocationOnScreen();
+    if ((mouseX < starRating.getX())
+        || (mouseY > srP.getY() + starRating.getHeight())
+        || (mouseX > srP.getX() + starRating.getWidth())
+        || (mouseY < srP.getY())) {
+      return true;
+    }
+    return false;
   }
 }

@@ -40,7 +40,7 @@ import javax.swing.event.CellEditorListener;
  * @author ssoldatos
  * @since version 0.9
  */
-public class StarRating extends javax.swing.JPanel implements StarsConstants {
+public class StarRating extends javax.swing.JPanel implements StarRatingConstants {
 
   /** The rate */
   private double rate;
@@ -58,6 +58,8 @@ public class StarRating extends javax.swing.JPanel implements StarsConstants {
   private boolean removeButtonVisible = false;
   /** The url of the star image to use **/
   private URL urlStarImage = getClass().getResource(STAR_IMAGE);
+  /** If the {@link StarRating} is in edit mode **/
+  boolean isEditing = true;
   
 
   /**
@@ -90,7 +92,7 @@ public class StarRating extends javax.swing.JPanel implements StarsConstants {
    * is hidden.
    * @param rate The initial rate
    * @param maxRate The maximum rate
-   * @param starImage The path to star image to use or an image of the {@link StarsConstants}
+   * @param starImage The path to star image to use or an image of the {@link StarRatingConstants}
    *
    */
   public StarRating(double rate, int maxRate, URL starImage) {
@@ -119,6 +121,7 @@ public class StarRating extends javax.swing.JPanel implements StarsConstants {
     showRemoveButton();
     setPreferredSize(new Dimension(maxRate * 20 + 40, 20));
     setOpaque(false);
+    addMouseListener(new StarMouseAdapter(this));
   }
 
   /** This method is called from within the constructor to
