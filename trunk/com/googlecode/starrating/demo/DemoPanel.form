@@ -136,9 +136,6 @@
           </SubComponents>
         </Container>
         <Component class="com.googlecode.starrating.StarRating" name="srating">
-          <Properties>
-            <Property name="removeButtonVisible" type="boolean" value="false"/>
-          </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new com.googlecode.starrating.StarRating(0.0, 5)"/>
           </AuxValues>
