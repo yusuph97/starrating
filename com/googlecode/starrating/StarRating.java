@@ -59,7 +59,7 @@ public class StarRating extends javax.swing.JPanel implements StarRatingConstant
   /** The url of the star image to use **/
   private URL urlStarImage = getClass().getResource(STAR_IMAGE);
   /** If the {@link StarRating} is in edit mode **/
-  boolean isEditing = true;
+  boolean isEditable = true;
   
 
   /**
@@ -119,6 +119,7 @@ public class StarRating extends javax.swing.JPanel implements StarRatingConstant
     }
     setRate(rate);
     setSize();
+    setRemoveButtonVisible(true);
     setOpaque(false);
     addMouseListener(new StarMouseAdapter(this));
   }
@@ -139,7 +140,7 @@ public class StarRating extends javax.swing.JPanel implements StarRatingConstant
     setName("StarRating"); // NOI18N
     setOpaque(false);
     setPreferredSize(new java.awt.Dimension(300, 20));
-    setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
+    setLayout(new java.awt.GridBagLayout());
   }// </editor-fold>//GEN-END:initComponents
 
   /**
@@ -322,28 +323,28 @@ public class StarRating extends javax.swing.JPanel implements StarRatingConstant
 
   /**
    * Changes the maximum rate
-   * @param maxRate the maxRate to set
+   * @param newMmaxRate the maxRate to set
    */
-  public void setMaxRate(int maxRate) {
-    if (maxRate > getMaxRate()) {
-      for (int i = stars.size(); i < maxRate * 2; i++) {
+  public void setMaxRate(int newMmaxRate) {
+    if (newMmaxRate > getMaxRate()) {
+      for (int i = stars.size(); i < newMmaxRate * 2; i++) {
         stars.add(i, new Star(i, false, getUrlStarImage()));
-        add(stars.get(i), i + 1);
+        add(stars.get(i), i +1 );
         stars.get(i).addStarMouseAdapter();
       }
     } else {
-      for (int i = stars.size(); i > maxRate * 2; i--) {
-        remove(stars.get(i - 1));
-        stars.remove(i - 1);
+      for (int i = stars.size(); i > newMmaxRate * 2; i--) {
+        remove(stars.get(i-1));
+        stars.remove(i-1);
       }
-      if (getRate() > maxRate) {
-        setRate(maxRate);
+      if (getRate() > newMmaxRate) {
+        setRate(newMmaxRate);
       }
     }
     setSize();
     validate();
     repaint();
-    this.maxRate = maxRate;
+    this.maxRate = newMmaxRate;
   }
 
   private void setStarImage(URL resource) {

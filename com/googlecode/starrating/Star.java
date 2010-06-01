@@ -28,8 +28,9 @@ import javax.swing.JLabel;
  * @author ssoldatos
  * @since version 0.9
  */
-public class Star extends JLabel implements StarRatingConstants{
+class Star extends JLabel implements StarRatingConstants {
 
+  private static final long serialVersionUID = 454564635L;
   /** The stars index */
   private final int index;
   /** If it's the left half of the star or not */
@@ -60,17 +61,17 @@ public class Star extends JLabel implements StarRatingConstants{
     setCursor(new Cursor(Cursor.HAND_CURSOR));
   }
 
-   /**
+  /**
    * Adds a {@link StarMouseAdapter} for receiving mouse events
    */
-  public void addStarMouseAdapter() {
+  void addStarMouseAdapter() {
     addMouseListener(new StarMouseAdapter(this));
   }
 
   /**
    * Sets the star's icon to the disabled one
    */
-  public void disableStar() {
+  void disableStar() {
     starEnabled = false;
     if (isLeft) {
       setIcon(new ImageIcon(getSplittedImage(0, false)));
@@ -82,7 +83,7 @@ public class Star extends JLabel implements StarRatingConstants{
   /**
    * Sets the star's icon to the enabled one
    */
-  public void enableStar() {
+  void enableStar() {
     starEnabled = true;
     if (isLeft) {
       setIcon(new ImageIcon(getSplittedImage(0, true)));
@@ -96,7 +97,7 @@ public class Star extends JLabel implements StarRatingConstants{
    * and its {@link #starEnabled}
    * @return the image
    */
-  private BufferedImage getImage() {
+  BufferedImage getImage() {
     if (getIndex() % 2 == 0) {
       isLeft = true;
       return starEnabled ? getSplittedImage(0, true) : getSplittedImage(0, false);
@@ -108,7 +109,7 @@ public class Star extends JLabel implements StarRatingConstants{
   /**
    * @return the index
    */
-  public int getIndex() {
+  int getIndex() {
     return index;
   }
 
@@ -141,14 +142,14 @@ public class Star extends JLabel implements StarRatingConstants{
   /**
    * @return the starImage
    */
-  public URL getStarImage() {
+  URL getStarImage() {
     return starImage;
   }
 
   /**
    * @param starImage the starImage to set
    */
-  public void setStarImage(URL starImage) {
+  void setStarImage(URL starImage) {
     setIcon(starImage);
   }
 

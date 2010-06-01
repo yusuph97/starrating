@@ -5,7 +5,6 @@
  */
 package com.googlecode.starrating.demo;
 
-import com.googlecode.starrating.Star;
 import com.googlecode.starrating.StarRating;
 import com.googlecode.starrating.StarTableCellEditor;
 import com.googlecode.starrating.StarTableCellRenderer;
@@ -13,15 +12,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
