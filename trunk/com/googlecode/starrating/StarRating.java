@@ -10,9 +10,13 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeListener;
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -87,10 +91,14 @@ public class StarRating extends javax.swing.JPanel implements StarsConstants {
    * @param starImage The URL of the star image to use.
    * Use getClass().getResources("path.to.custom.image") or null for the default image
    */
-  public StarRating(double rate, int maxRate, URL starImage) {
+  public StarRating(double rate, int maxRate, String starImage) {
     super();
     this.maxRate = maxRate;
-    setStarImage(starImage);
+      if (starImage == null) {
+        setStarImage(null);
+      } else {
+        setStarImage(starImage);
+      }
     initComponents();
     stars = new ArrayList<Star>();
     valueLabel = new ValueLabel(rate);
@@ -193,7 +201,7 @@ public class StarRating extends javax.swing.JPanel implements StarsConstants {
   void previewRate(double rate) {
     for (int i = 0; i < stars.size(); i++) {
       Star star = stars.get(i);
-      if (i < rate*2) {
+      if (i < rate * 2) {
         star.enableStar();
       } else {
         star.disableStar();
@@ -345,20 +353,20 @@ public class StarRating extends javax.swing.JPanel implements StarsConstants {
     return starImage;
   }
 
-  void setStarImage(URL starImage) {
-    if (starImage == null) {
+  void setStarImage(String starImage) {
+    if (starImage == null || !(new File(starImage).isFile())) {
       this.starImage = getClass().getResource(STAR_IMAGE);
     } else {
       try {
-        BufferedImage starBuffImage = ImageIO.read(starImage);
-        this.starImage = starImage;
+        BufferedImage starBuffImage = ImageIO.read(new File(starImage));
+        this.starImage = (new File(starImage)).toURI().toURL();
       } catch (IOException ex) {
         this.starImage = getClass().getResource(STAR_IMAGE);
       }
     }
   }
 
-  public void changeStarImage(URL starImage) {
+  public void changeStarImage(String starImage) {
     setStarImage(starImage);
     changeStarImages();
     validate();
