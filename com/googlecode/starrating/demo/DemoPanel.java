@@ -93,7 +93,7 @@ public class DemoPanel extends javax.swing.JPanel {
     panel = new javax.swing.JPanel();
     scrollPane = new javax.swing.JScrollPane();
     table = new javax.swing.JTable();
-    srating = new com.googlecode.starrating.StarRating(0.0, 5,null);
+    srating = new com.googlecode.starrating.StarRating(0.0, 5,"");
     label_title = new javax.swing.JLabel();
     label_table_title = new javax.swing.JLabel();
     label_standAlone_title = new javax.swing.JLabel();
@@ -262,7 +262,7 @@ public class DemoPanel extends javax.swing.JPanel {
       URL url = null;
       try {
         url = f.toURI().toURL();
-        srating.changeStarImage(url);
+        srating.changeStarImage(f.getAbsolutePath());
         srating.validate();
         srating.repaint();
         panel.validate();
