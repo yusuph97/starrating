@@ -5,6 +5,7 @@
  */
 package com.googlecode.starrating.demo;
 
+import com.googlecode.starrating.Star;
 import com.googlecode.starrating.StarRating;
 import com.googlecode.starrating.StarTableCellEditor;
 import com.googlecode.starrating.StarTableCellRenderer;
@@ -66,7 +67,7 @@ public class DemoPanel extends javax.swing.JPanel {
       }
     });
     srating.setRate(2.5);
-    srating.changeStarImage(getClass().getResource("face.png"));
+    srating.changeStarImage(StarRating.class.getResource(StarRating.EURO_IMAGE));
     /**
      * Adds a PropertyChangeListener to the StarRating and listens for property
      * {@link StarRating#RATE_CHANGED} change.
