@@ -84,6 +84,7 @@ class StarMouseAdapter extends MouseAdapter {
         isTableEditor = true;
       }
       starRating.setOpaque(true);
+      starRating.setRemoveButtonVisible(true);
       if (!isTableEditor) {
         this.starRating.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
       } else {
@@ -91,7 +92,7 @@ class StarMouseAdapter extends MouseAdapter {
       }
       if (sourceType == REMOVE_BUTTON) {
         RemoveButton removeButton = (RemoveButton) e.getSource();
-        removeButton.setIcon(new ImageIcon(getClass().getResource(RemoveButton.REMOVE_IMAGE)));
+        removeButton.setIcon(new ImageIcon(getClass().getResource(RemoveButton.REMOVE_BUTTON_IMAGE)));
         starRating.previewRate((double) (index + 1) / 2);
       } else if (sourceType == STAR) {
         starRating.previewRate((double) (index + 1) / 2);
@@ -104,6 +105,7 @@ class StarMouseAdapter extends MouseAdapter {
   public void mouseExited(MouseEvent e) {
     if (mouseLeftStarRating(e)) {
       starRating.setRatingEnabled(enabledStatus);
+      starRating.setRemoveButtonVisible(false);
       starRating.isEditing = true;
     }
     if (starRating.isEnabled() && starRating.isEditing) {

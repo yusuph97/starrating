@@ -19,15 +19,24 @@ import javax.swing.table.TableCellEditor;
  */
 public class StarTableCellEditor extends AbstractCellEditor implements TableCellEditor {
 
+  private static final long serialVersionUID = 564563245634L;
   /** The editors {@link StarRating} object */
   protected StarRating rating;
   /** If the editor has a {@link ValueLabel} */
   private boolean valueLabelVisible;
 
+  /**
+   * Creates a default {@link StarRating} editor
+   */
   public StarTableCellEditor() {
     this(false);
   }
 
+  /**
+   * Creates a default {@link StarRating} editor and sets if {@link ValueLabel}
+   * will be visible.
+   * @param hasValueLabel If valueLabel is visible
+   */
   public StarTableCellEditor(boolean hasValueLabel) {
     super();
     rating = new StarRating();
@@ -35,14 +44,12 @@ public class StarTableCellEditor extends AbstractCellEditor implements TableCell
     rating.setRemoveButtonVisible(true);
   }
 
-  public double getValue(){
-    return rating.getRate();
-  }
-
+  @Override
   public Object getCellEditorValue() {
     return rating.getRate();
   }
 
+  @Override
   public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
     rating.setRate(Double.parseDouble(String.valueOf(value)));
     return rating;
@@ -57,23 +64,26 @@ public class StarTableCellEditor extends AbstractCellEditor implements TableCell
     return false;
   }
 
+  /**
+   * Set if the {@link ValueLabel} should be shown
+   * @param valueLabelVisible If the value label is shown
+   */
   public void setValueLabelShown(boolean valueLabelVisible) {
     rating.setValueLabelVisible(valueLabelVisible);
     setValueLabelVisible(valueLabelVisible);
   }
 
   /**
-   * @return the hasValueLabel
+   * @return If value label is shown
    */
   public boolean isValueLabelVisible() {
     return valueLabelVisible;
   }
 
   /**
-   * @param hasValueLabel the hasValueLabel to set
+   * @param Sets the value label to visible
    */
-  public void setValueLabelVisible(boolean hasValueLabel) {
+  private void setValueLabelVisible(boolean hasValueLabel) {
     this.valueLabelVisible = hasValueLabel;
   }
- 
 }

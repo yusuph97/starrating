@@ -58,12 +58,12 @@ public class DemoPanel extends javax.swing.JPanel {
 
       public void editingStopped(ChangeEvent e) {
         StarTableCellEditor s = (StarTableCellEditor) e.getSource();
-        System.out.println("CellEditorListener notified (Editing stopped), value: " + s.getValue());
+        System.out.println("CellEditorListener notified (Editing stopped), value: " + s.getCellEditorValue());
       }
 
       public void editingCanceled(ChangeEvent e) {
         StarTableCellEditor s = (StarTableCellEditor) e.getSource();
-        System.out.println("CellEditorListener notified (Editing Cancelled), value: " + s.getValue());
+        System.out.println("CellEditorListener notified (Editing Cancelled), value: " +  s.getCellEditorValue());
       }
     });
     srating.setRate(2.5);

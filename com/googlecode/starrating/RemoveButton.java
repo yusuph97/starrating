@@ -19,18 +19,19 @@ import javax.swing.JLabel;
  * @since version 0.9
  */
 public class RemoveButton extends JLabel implements StarRatingConstants{
+  private static final long serialVersionUID = 3453546456L;
 
   /**
    * Creates a RemoveButton
    */
   public RemoveButton() {
     super();
-    setBorder(BorderFactory.createEmptyBorder());
-    setPreferredSize(new Dimension(20, 20));
-    setIcon(new ImageIcon(getClass().getResource(REMOVE_IMAGE)));
+    setBorder(BorderFactory.createEmptyBorder(0,0,0,REMOVE_BUTTON_GAP));
+    setIcon(new ImageIcon(getClass().getResource(REMOVE_BUTTON_IMAGE)));
     setIcon(getDisabledIcon());
     setCursor(new Cursor(Cursor.HAND_CURSOR));
     setOpaque(false);
+    setPreferredSize(new Dimension(REMOVE_BUTTON_WIDTH+REMOVE_BUTTON_GAP, STAR_RATING_HEIGHT));
   }
 
   
