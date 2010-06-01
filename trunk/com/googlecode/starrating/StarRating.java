@@ -5,6 +5,7 @@
  */
 package com.googlecode.starrating;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -24,13 +25,13 @@ import javax.swing.JLabel;
 import javax.swing.event.CellEditorListener;
 
 /**
- * StarRating Class
- * StarRating is a JPanel that holds images of half stars
+ * StarRating Class<br />
+ * StarRating is a JPanel that holds images of half stars<br />
  * The rate ranges from 0 to the number of stars with a step of 0.5.<br />
  * The rate is shown in the {@link ValueLabel} which can be visible or not<br />
  * A {@link RemoveButton} (which can be disabled too) sets the rate to 0.0 <br />
  * When the rate changes a property change event is fired.The properties name
- * is {@link #RATE_CHANGED}.
+ * is {@link #RATE_CHANGED}.<br />
  * A {@link PropertyChangeListener} can be attached to the {@link StarRating} to
  * perform additional tasks (eg save rate to a database etc)<br />
  * When {@link StarRating} is used as a cell editor a {@link CellEditorListener}
@@ -55,19 +56,20 @@ public class StarRating extends javax.swing.JPanel implements StarsConstants {
   private boolean valueLabelVisible = false;
   /** If {@link #removeButton} is shown */
   private boolean removeButtonVisible = false;
-  /** The star image to use **/
-  private URL starImage;
+  /** The url of the star image to use **/
+  private URL urlStarImage = getClass().getResource(STAR_IMAGE);
+  
 
   /**
-   * Creates a default StarRating with a {@link #rate} of 0.0 and a
-   * {@link #maxRate} of 5
+   * Creates a default StarRating with a {@link #rate} of 0.0 a
+   * {@link #maxRate} of 5 and with the default {@link #starImage}
    */
   public StarRating() {
     this(0.0, 5, null);
   }
 
   /**
-   * Creates a StarRating with a initial rate
+   * Creates a default {@link StarRating} with a initial rate
    * @param rate The rate
    */
   public StarRating(double rate) {
@@ -75,11 +77,11 @@ public class StarRating extends javax.swing.JPanel implements StarsConstants {
   }
 
   /**
-   * Creates a StarRating with a maximun rate
+   * Creates a default {@link StarRating} with an initial rate and a maximun rate
    * @param rate The initial rate
    * @param maxRate The maximum rate
    */
-  public StarRating(int rate, int maxRate) {
+  public StarRating(double rate, int maxRate) {
     this(rate, maxRate, null);
   }
 
@@ -88,10 +90,10 @@ public class StarRating extends javax.swing.JPanel implements StarsConstants {
    * is hidden.
    * @param rate The initial rate
    * @param maxRate The maximum rate
-   * @param starImage The URL of the star image to use.
-   * Use getClass().getResources("path.to.custom.image") or null for the default image
+   * @param starImage The path to star image to use or an image of the {@link StarsConstants}
+   *
    */
-  public StarRating(double rate, int maxRate, String starImage) {
+  public StarRating(double rate, int maxRate, URL starImage) {
     super();
     this.maxRate = maxRate;
       if (starImage == null) {
@@ -102,18 +104,21 @@ public class StarRating extends javax.swing.JPanel implements StarsConstants {
     initComponents();
     stars = new ArrayList<Star>();
     valueLabel = new ValueLabel(rate);
+    valueLabel.setBackground(getBackground());
     removeButton = new RemoveButton();
-    setOpaque(false);
+    removeButton.setBackground(getBackground());
     for (int i = 0; i < getMaxRate() * 2; i++) {
       boolean enabled;
       enabled = i <= rate * 2 ? true : false;
-      stars.add(i, new Star(i, enabled, getStarImage()));
+      stars.add(i, new Star(i, enabled, getUrlStarImage()));
       add(stars.get(i));
       stars.get(i).addStarMouseAdapter();
+      stars.get(i).setBackground(getBackground());
     }
     setRate(rate);
     showRemoveButton();
     setPreferredSize(new Dimension(maxRate * 20 + 40, 20));
+    setOpaque(false);
   }
 
   /** This method is called from within the constructor to
@@ -125,7 +130,8 @@ public class StarRating extends javax.swing.JPanel implements StarsConstants {
   // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
   private void initComponents() {
 
-    setBackground(new java.awt.Color(255, 51, 51));
+    setBackground(new java.awt.Color(255, 255, 255));
+    setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
     setMaximumSize(new java.awt.Dimension(10000, 20));
     setMinimumSize(new java.awt.Dimension(150, 20));
     setName("StarRating"); // NOI18N
@@ -134,14 +140,6 @@ public class StarRating extends javax.swing.JPanel implements StarsConstants {
     setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
   }// </editor-fold>//GEN-END:initComponents
 
-  /**
-   * If {@link StarRating} is enabled the rate is set to 0.0
-   * @param evt The MouseEvent
-   */
-  /**
-   * If {@link StarRating} is enabled the rate is unchanged
-   * @param evt The MouseEvent
-   */
   /**
    * Sets if StarRating is enabled
    * @param enabled If rating is enabled
@@ -327,7 +325,7 @@ public class StarRating extends javax.swing.JPanel implements StarsConstants {
   public void setMaxRate(int maxRate) {
     if (maxRate > getMaxRate()) {
       for (int i = stars.size(); i < maxRate * 2; i++) {
-        stars.add(i, new Star(i, false, getStarImage()));
+        stars.add(i, new Star(i, false, getUrlStarImage()));
         add(stars.get(i), i + 1);
         stars.get(i).addStarMouseAdapter();
       }
@@ -346,28 +344,21 @@ public class StarRating extends javax.swing.JPanel implements StarsConstants {
     this.maxRate = maxRate;
   }
 
-  public URL getStarImage() {
-    if (starImage == null) {
-      return getClass().getResource(STAR_IMAGE);
-    }
-    return starImage;
-  }
-
-  void setStarImage(String starImage) {
-    if (starImage == null || !(new File(starImage).isFile())) {
-      this.starImage = getClass().getResource(STAR_IMAGE);
+  private void setStarImage(URL resource) {
+    if (resource == null) {
+      this.urlStarImage = getClass().getResource(STAR_IMAGE);
     } else {
       try {
-        BufferedImage starBuffImage = ImageIO.read(new File(starImage));
-        this.starImage = (new File(starImage)).toURI().toURL();
+        BufferedImage starBuffImage = ImageIO.read(resource);
+        this.urlStarImage = resource;
       } catch (IOException ex) {
-        this.starImage = getClass().getResource(STAR_IMAGE);
+        this.urlStarImage = getClass().getResource(STAR_IMAGE);
       }
     }
   }
 
-  public void changeStarImage(String starImage) {
-    setStarImage(starImage);
+  public void changeStarImage(URL resource) {
+    setStarImage(resource);
     changeStarImages();
     validate();
     repaint();
@@ -376,7 +367,7 @@ public class StarRating extends javax.swing.JPanel implements StarsConstants {
   private void changeStarImages() {
     for (int i = 0; i < stars.size(); i++) {
       Star star = stars.get(i);
-      star.setStarImage(getStarImage());
+      star.setStarImage(getUrlStarImage());
     }
   }
 
@@ -389,6 +380,13 @@ public class StarRating extends javax.swing.JPanel implements StarsConstants {
     g.drawImage(img, 0, 0, imageHeight / (w / h), imageHeight, 0, 0, w, h, null);
     g.dispose();
     return dimg;
+  }
+
+  /**
+   * @return the urlStarImage
+   */
+  private URL getUrlStarImage() {
+    return urlStarImage;
   }
   // Variables declaration - do not modify//GEN-BEGIN:variables
   // End of variables declaration//GEN-END:variables
