@@ -5,6 +5,7 @@
  */
 package com.googlecode.starrating;
 
+import java.awt.Color;
 import java.awt.Component;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -36,6 +37,7 @@ public class StarTableCellRenderer extends DefaultTableCellRenderer {
   public StarTableCellRenderer(boolean isValueLabelShown, boolean isRemoveButtonShown) {
     setValueLabelShown(isValueLabelShown);
     rating.setRemoveButtonVisible(isRemoveButtonShown);
+    rating.setBackground(Color.WHITE);
     rating.setOpaque(true);
   }
 

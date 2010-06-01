@@ -1,25 +1,27 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * @(#)ValueLabel.java	28/05/2010
+ *
+ * Copyright 2010 Spyros Soldatos
  */
 package com.googlecode.starrating;
 
 /**
- *
- * @author ssoldatos
+ * Star Rating constants
+ * @author lordovol
+ * @since version 1.0
  */
 public interface StarsConstants {
 
   /** The star image **/
-  public static String STAR_IMAGE = "images/star.png";
+  String STAR_IMAGE = "images/star.png";
   /** The smiling face image **/
-  public static String FACE_IMAGE = "images/face.png";
+  String FACE_IMAGE = "images/face.png";
   /** The euro image **/
-  public static String EURO_IMAGE = "images/euro.png";
+  String EURO_IMAGE = "images/euro.png";
   /** The note image **/
-  public static String NOTE_IMAGE = "images/note.png";
+  String NOTE_IMAGE = "images/note.png";
   /** The white star image **/
-  public static String WHITE_STAR_IMAGE = "images/whiteStar.png";
+  String WHITE_STAR_IMAGE = "images/whiteStar.png";
   /** The property that changes when new rate is set */
-  public static String RATE_CHANGED = "RATE_CHANGED";
+  String RATE_CHANGED = "RATE_CHANGED";
 }

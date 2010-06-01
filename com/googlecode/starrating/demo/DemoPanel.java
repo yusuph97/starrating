@@ -66,6 +66,7 @@ public class DemoPanel extends javax.swing.JPanel {
       }
     });
     srating.setRate(2.5);
+    srating.changeStarImage(getClass().getResource("face.png"));
     /**
      * Adds a PropertyChangeListener to the StarRating and listens for property
      * {@link StarRating#RATE_CHANGED} change.
@@ -93,7 +94,7 @@ public class DemoPanel extends javax.swing.JPanel {
     panel = new javax.swing.JPanel();
     scrollPane = new javax.swing.JScrollPane();
     table = new javax.swing.JTable();
-    srating = new com.googlecode.starrating.StarRating(0.0, 5,"");
+    srating = new com.googlecode.starrating.StarRating(0.0, 5);
     label_title = new javax.swing.JLabel();
     label_table_title = new javax.swing.JLabel();
     label_standAlone_title = new javax.swing.JLabel();
@@ -262,7 +263,7 @@ public class DemoPanel extends javax.swing.JPanel {
       URL url = null;
       try {
         url = f.toURI().toURL();
-        srating.changeStarImage(f.getAbsolutePath());
+        srating.changeStarImage(url);
         srating.validate();
         srating.repaint();
         panel.validate();

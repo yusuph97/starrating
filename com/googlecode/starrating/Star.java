@@ -59,7 +59,6 @@ public class Star extends JLabel{
     setIcon(starImage);
     setBorder(BorderFactory.createEmptyBorder());
     setPreferredSize(new Dimension(8, 20));
-    setBackground(Color.WHITE);
     setOpaque(false);
     setCursor(new Cursor(Cursor.HAND_CURSOR));
   }

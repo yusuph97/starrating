@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JTable;
 
@@ -38,6 +39,8 @@ class StarMouseAdapter extends MouseAdapter {
   private Component source;
   /** The {@link StarRating} that the source component belongs */
   private StarRating starRating;
+  /** If starrating is a table editor **/
+  private boolean isTableEditor;
 
   /**
    * Creates a {@link StarMouseAdapter} for a component that can be a {@link Star}
@@ -61,6 +64,7 @@ class StarMouseAdapter extends MouseAdapter {
       throw new IllegalArgumentException("Wrong source component, must be a Star, ValueLabel or RemoveButton");
     }
     this.starRating = (StarRating) source.getParent();
+
   }
 
   /**
@@ -74,13 +78,21 @@ class StarMouseAdapter extends MouseAdapter {
   @Override
   public void mouseEntered(MouseEvent e) {
     if (starRating.isEnabled()) {
-      starRating.setBackground(Color.WHITE);
+      if (starRating.getParent() instanceof JTable) {
+        isTableEditor = true;
+      }
       starRating.setOpaque(true);
+      if (!isTableEditor) {
+        this.starRating.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+      } else {
+        this.starRating.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+      }
+      this.starRating.setBackground(Color.WHITE);
       if (sourceType == REMOVE_BUTTON) {
         RemoveButton removeButton = (RemoveButton) e.getSource();
         removeButton.setIcon(new ImageIcon(getClass().getResource(RemoveButton.REMOVE_IMAGE)));
         starRating.previewRate((double) (index + 1) / 2);
-      } else if(sourceType == STAR){
+      } else if (sourceType == STAR) {
         starRating.previewRate((double) (index + 1) / 2);
       }
       super.mouseEntered(e);
@@ -95,8 +107,13 @@ class StarMouseAdapter extends MouseAdapter {
   @Override
   public void mouseExited(MouseEvent e) {
     if (starRating.isEnabled()) {
-      //sr.setBackground(sr.getParent().getBackground());
       starRating.setOpaque(false);
+      if (!isTableEditor) {
+        this.starRating.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+      } else {
+        this.starRating.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+      }
+
       if (sourceType == REMOVE_BUTTON) {
         RemoveButton removeButton = (RemoveButton) e.getSource();
         removeButton.setIcon(removeButton.getDisabledIcon());
@@ -117,7 +134,13 @@ class StarMouseAdapter extends MouseAdapter {
     if (starRating.isEnabled() && sourceType != VALUE_LABEL) {
       starRating.setRate((double) (index + 1) / 2);
       starRating.previewRate((double) (index + 1) / 2);
-      if (starRating.getParent() instanceof JTable) {
+      if (!isTableEditor) {
+        this.starRating.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+      } else {
+        this.starRating.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+      }
+      this.starRating.setOpaque(false);
+      if (isTableEditor) {
         JTable table = (JTable) starRating.getParent();
         table.getCellEditor().stopCellEditing();
       }

@@ -5,8 +5,10 @@
  */
 package com.googlecode.starrating;
 
+import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 /**
  * A label displaying the {@link StarRating} rate.
@@ -28,7 +30,8 @@ public class ValueLabel extends JLabel {
   public ValueLabel(double rate) {
     super();
     setOpaque(false);
-    setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
+    setBorder(BorderFactory.createEmptyBorder(2, 10, 2, 0));
+    setHorizontalAlignment(SwingConstants.RIGHT);
     setValue(rate);
   }
 
