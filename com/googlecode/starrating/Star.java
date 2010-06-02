@@ -40,15 +40,14 @@ class Star extends JLabel implements StarRatingConstants {
   private boolean starEnabled;
   /** The buffered image of the star **/
   private BufferedImage starBuffImage;
-  /** The Url of the star image **/
-  private URL url;
+  /** The image that's used as a star **/
   private ImageIcon wholeStarImage;
 
   /**
    * Creates a Star
    * @param index The star's index.
    * @param enabled If the star uses the enabled image as it's icon
-   * @param wholeStarImage The URL of the star image to use
+   * @param wholeStarImage The ImageIcon of the star image to use
    */
   Star(final int index, boolean enabled, ImageIcon wholeStarImage) {
     super();
@@ -68,6 +67,14 @@ class Star extends JLabel implements StarRatingConstants {
    */
   void addStarMouseAdapter() {
     addMouseListener(new StarMouseAdapter(this));
+  }
+
+  /**
+   * Get the star's index
+   * @return the index
+   */
+  int getIndex() {
+    return index;
   }
 
   /**
@@ -95,9 +102,9 @@ class Star extends JLabel implements StarRatingConstants {
   }
 
   /**
-   * Gets the stars image depending on it's {@link #index}
+   * Gets the stars half image depending on it's {@link #index}
    * and its {@link #starEnabled}
-   * @return the image
+   * @return the half of the stars image
    */
   ImageIcon getHalfStarImage() {
     if (getIndex() % 2 == 0) {
@@ -106,13 +113,6 @@ class Star extends JLabel implements StarRatingConstants {
     } else {
       return starEnabled ? getSplittedImage(1, true) : getSplittedImage(1, false);
     }
-  }
-
-  /**
-   * @return the index
-   */
-  int getIndex() {
-    return index;
   }
 
   private ImageIcon getSplittedImage(int index, boolean opaque) {
@@ -142,6 +142,7 @@ class Star extends JLabel implements StarRatingConstants {
   }
 
   /**
+   * Gets the star image to use
    * @return the starImage
    */
   ImageIcon getWholeStarImage() {
@@ -149,6 +150,7 @@ class Star extends JLabel implements StarRatingConstants {
   }
 
   /**
+   * Sets the star image to use.
    * @param starImage the starImage to set
    */
   void setWholeStarImage(ImageIcon starImage) {
