@@ -8,6 +8,7 @@ package com.googlecode.starrating;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeListener;
@@ -57,10 +58,9 @@ public class StarRating extends javax.swing.JPanel implements StarRatingConstant
   /** If {@link #removeButton} is shown */
   private boolean removeButtonVisible = false;
   /** The url of the star image to use **/
-  private URL urlStarImage = getClass().getResource(STAR_IMAGE);
+  private ImageIcon starImageIcon ;
   /** If the {@link StarRating} is in edit mode **/
   boolean isEditable = true;
-  
 
   /**
    * Creates a default StarRating with a {@link #rate} of 0.0 a
@@ -92,17 +92,13 @@ public class StarRating extends javax.swing.JPanel implements StarRatingConstant
    * is hidden.
    * @param rate The initial rate
    * @param maxRate The maximum rate
-   * @param starImage The path to star image to use or an image of the {@link StarRatingConstants}
+   * @param icon
    *
    */
-  public StarRating(double rate, int maxRate, URL starImage) {
+  public StarRating(double rate, int maxRate, ImageIcon icon) {
     super();
     this.maxRate = maxRate;
-      if (starImage == null) {
-        setStarImage(null);
-      } else {
-        setStarImage(starImage);
-      }
+    setStarImage(icon);
     initComponents();
     stars = new ArrayList<Star>();
     valueLabel = new ValueLabel(rate);
@@ -112,7 +108,7 @@ public class StarRating extends javax.swing.JPanel implements StarRatingConstant
     for (int i = 0; i < getMaxRate() * 2; i++) {
       boolean enabled;
       enabled = i <= rate * 2 ? true : false;
-      stars.add(i, new Star(i, enabled, getUrlStarImage()));
+      stars.add(i, new Star(i, enabled, getStarImageIcon()));
       add(stars.get(i));
       stars.get(i).addStarMouseAdapter();
       stars.get(i).setBackground(getBackground());
@@ -328,14 +324,14 @@ public class StarRating extends javax.swing.JPanel implements StarRatingConstant
   public void setMaxRate(int newMmaxRate) {
     if (newMmaxRate > getMaxRate()) {
       for (int i = stars.size(); i < newMmaxRate * 2; i++) {
-        stars.add(i, new Star(i, false, getUrlStarImage()));
-        add(stars.get(i), i +1 );
+        stars.add(i, new Star(i, false, getStarImageIcon()));
+        add(stars.get(i), i + 1);
         stars.get(i).addStarMouseAdapter();
       }
     } else {
       for (int i = stars.size(); i > newMmaxRate * 2; i--) {
-        remove(stars.get(i-1));
-        stars.remove(i-1);
+        remove(stars.get(i - 1));
+        stars.remove(i - 1);
       }
       if (getRate() > newMmaxRate) {
         setRate(newMmaxRate);
@@ -347,21 +343,16 @@ public class StarRating extends javax.swing.JPanel implements StarRatingConstant
     this.maxRate = newMmaxRate;
   }
 
-  private void setStarImage(URL resource) {
-    if (resource == null) {
-      this.urlStarImage = getClass().getResource(STAR_IMAGE);
+  private void setStarImage(ImageIcon icon) {
+    if (icon == null) {
+      this.starImageIcon = new ImageIcon(getClass().getResource(STAR_IMAGE));
     } else {
-      try {
-        BufferedImage starBuffImage = ImageIO.read(resource);
-        this.urlStarImage = resource;
-      } catch (IOException ex) {
-        this.urlStarImage = getClass().getResource(STAR_IMAGE);
-      }
+      this.starImageIcon = icon;
     }
   }
 
-  public void changeStarImage(URL resource) {
-    setStarImage(resource);
+  public void changeStarImage(ImageIcon icon) {
+    setStarImage(icon);
     changeStarImages();
     validate();
     repaint();
@@ -370,34 +361,25 @@ public class StarRating extends javax.swing.JPanel implements StarRatingConstant
   private void changeStarImages() {
     for (int i = 0; i < stars.size(); i++) {
       Star star = stars.get(i);
-      star.setStarImage(getUrlStarImage());
+      star.setWholeStarImage(getStarImageIcon());
     }
-  }
-
-  public static BufferedImage resizeImage(BufferedImage img, int imageHeight) {
-    int w = img.getWidth();
-    int h = img.getHeight();
-    BufferedImage dimg = dimg = new BufferedImage(imageHeight / (w / h), imageHeight, img.getType());
-    Graphics2D g = dimg.createGraphics();
-    g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-    g.drawImage(img, 0, 0, imageHeight / (w / h), imageHeight, 0, 0, w, h, null);
-    g.dispose();
-    return dimg;
   }
 
   /**
    * @return the urlStarImage
    */
-  private URL getUrlStarImage() {
-    return urlStarImage;
+  private ImageIcon getStarImageIcon() {
+    if(starImageIcon == null){
+      return new ImageIcon(getClass().getResource(STAR_IMAGE));
+    }
+    return starImageIcon;
   }
 
   private void setSize() {
-    int width = (int)(stars.size() * STAR_IMAGE_WIDTH +
-        LABEL_WIDTH + LABEL_GAP +
-        removeButton.getPreferredSize().getWidth() + REMOVE_BUTTON_GAP);
-    System.out.println(width);
-    setPreferredSize(new Dimension(width,STAR_RATING_HEIGHT));
+    int width = (int) (stars.size() * STAR_IMAGE_WIDTH
+        + LABEL_WIDTH + LABEL_GAP
+        + removeButton.getPreferredSize().getWidth() + REMOVE_BUTTON_GAP);
+    setPreferredSize(new Dimension(width, STAR_RATING_HEIGHT));
   }
   // Variables declaration - do not modify//GEN-BEGIN:variables
   // End of variables declaration//GEN-END:variables

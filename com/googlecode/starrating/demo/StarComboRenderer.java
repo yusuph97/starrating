@@ -8,9 +8,11 @@ package com.googlecode.starrating.demo;
 import com.googlecode.starrating.StarRating;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -44,16 +46,17 @@ public class StarComboRenderer extends JLabel implements ListCellRenderer {
       setForeground(list.getForeground());
     }
     try {
-      File f = (File) value;
-      starBuffImage = ImageIO.read(f);
-      setText(f.getName());
-      starBuffImage = StarRating.resizeImage(starBuffImage, 16);
-    } catch (IOException ex) {
-      return this;
+      ImageIcon u = (ImageIcon) value;
+      int w = u.getIconWidth();
+      int h = u.getIconHeight();
+      Image im = u.getImage().getScaledInstance(w/h*StarRating.STAR_IMAGE_HEIGHT, StarRating.STAR_IMAGE_HEIGHT, Image.SCALE_SMOOTH);
+
+      setIcon(new ImageIcon(im));
+      setText(u.getDescription());
     } catch(IllegalArgumentException ex){
       return this;
     }
-    setIcon(new ImageIcon(starBuffImage));
+    
     return this;
   }
 
