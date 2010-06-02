@@ -5,22 +5,9 @@
  */
 package com.googlecode.starrating;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeListener;
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.event.CellEditorListener;
@@ -43,6 +30,7 @@ import javax.swing.event.CellEditorListener;
  */
 public class StarRating extends javax.swing.JPanel implements StarRatingConstants {
 
+  private static final long serialVersionUID = 5465678834L;
   /** The rate */
   private double rate;
   /** The maximum rate*/
@@ -57,14 +45,14 @@ public class StarRating extends javax.swing.JPanel implements StarRatingConstant
   private boolean valueLabelVisible = false;
   /** If {@link #removeButton} is shown */
   private boolean removeButtonVisible = false;
-  /** The url of the star image to use **/
+  /** The star image to use **/
   private ImageIcon starImageIcon ;
   /** If the {@link StarRating} is in edit mode **/
   boolean isEditable = true;
 
   /**
    * Creates a default StarRating with a {@link #rate} of 0.0 a
-   * {@link #maxRate} of 5 and with the default {@link #starImage}
+   * {@link #maxRate} of 5 and with the default {@link #starImageIcon}
    */
   public StarRating() {
     this(0.0, 5, null);
@@ -92,7 +80,7 @@ public class StarRating extends javax.swing.JPanel implements StarRatingConstant
    * is hidden.
    * @param rate The initial rate
    * @param maxRate The maximum rate
-   * @param icon
+   * @param icon The image to use as the star
    *
    */
   public StarRating(double rate, int maxRate, ImageIcon icon) {
@@ -351,6 +339,10 @@ public class StarRating extends javax.swing.JPanel implements StarRatingConstant
     }
   }
 
+  /**
+   * Changes the star image to a new one.
+   * @param icon The new image to use
+   */
   public void changeStarImage(ImageIcon icon) {
     setStarImage(icon);
     changeStarImages();
