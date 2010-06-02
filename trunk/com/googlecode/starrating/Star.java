@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -41,20 +42,21 @@ class Star extends JLabel implements StarRatingConstants {
   private BufferedImage starBuffImage;
   /** The Url of the star image **/
   private URL url;
-  private URL starImage;
+  private ImageIcon wholeStarImage;
 
   /**
    * Creates a Star
    * @param index The star's index.
    * @param enabled If the star uses the enabled image as it's icon
-   * @param starImage The URL of the star image to use
+   * @param wholeStarImage The URL of the star image to use
    */
-  Star(final int index, boolean enabled, URL starImage) {
+  Star(final int index, boolean enabled, ImageIcon wholeStarImage) {
     super();
     this.index = index;
     this.starEnabled = enabled;
-    this.starImage = starImage;
-    setIcon(starImage);
+    this.wholeStarImage = resizeImage(wholeStarImage);
+    createBufferedImage();
+    setIcon(getHalfStarImage());
     setBorder(BorderFactory.createEmptyBorder());
     setPreferredSize(new Dimension(STAR_IMAGE_WIDTH, STAR_RATING_HEIGHT));
     setOpaque(false);
@@ -74,9 +76,9 @@ class Star extends JLabel implements StarRatingConstants {
   void disableStar() {
     starEnabled = false;
     if (isLeft) {
-      setIcon(new ImageIcon(getSplittedImage(0, false)));
+      setIcon(getSplittedImage(0, false));
     } else {
-      setIcon(new ImageIcon(getSplittedImage(1, false)));
+      setIcon(getSplittedImage(1, false));
     }
   }
 
@@ -86,9 +88,9 @@ class Star extends JLabel implements StarRatingConstants {
   void enableStar() {
     starEnabled = true;
     if (isLeft) {
-      setIcon(new ImageIcon(getSplittedImage(0, true)));
+      setIcon(getSplittedImage(0, true));
     } else {
-      setIcon(new ImageIcon(getSplittedImage(1, true)));
+      setIcon(getSplittedImage(1, true));
     }
   }
 
@@ -97,7 +99,7 @@ class Star extends JLabel implements StarRatingConstants {
    * and its {@link #starEnabled}
    * @return the image
    */
-  BufferedImage getImage() {
+  ImageIcon getHalfStarImage() {
     if (getIndex() % 2 == 0) {
       isLeft = true;
       return starEnabled ? getSplittedImage(0, true) : getSplittedImage(0, false);
@@ -113,9 +115,9 @@ class Star extends JLabel implements StarRatingConstants {
     return index;
   }
 
-  private BufferedImage getSplittedImage(int index, boolean opaque) {
+  private ImageIcon getSplittedImage(int index, boolean opaque) {
     int w = starBuffImage.getWidth() / 2;
-    int h = starBuffImage.getHeight() / 1;
+    int h = starBuffImage.getHeight();
     int num = 0;
     BufferedImage img;
     for (int y = 0; y < 2; y++) {
@@ -130,7 +132,7 @@ class Star extends JLabel implements StarRatingConstants {
           }
           g.drawImage(starBuffImage, 0, 0, w, h, w * x, h * y, w * x + w, h * y + h, null);
           g.dispose();
-          return img;
+          return new ImageIcon(img);
         }
         num++;
       }
@@ -142,31 +144,37 @@ class Star extends JLabel implements StarRatingConstants {
   /**
    * @return the starImage
    */
-  URL getStarImage() {
-    return starImage;
+  ImageIcon getWholeStarImage() {
+    return wholeStarImage;
   }
 
   /**
    * @param starImage the starImage to set
    */
-  void setStarImage(URL starImage) {
-    setIcon(starImage);
-  }
-
-  private void setIcon(URL starImage) {
-    try {
-      starBuffImage = ImageIO.read(starImage);
-    } catch (IOException ex1) {
-      url = Star.class.getResource(StarRating.STAR_IMAGE);
-      try {
-        starBuffImage = ImageIO.read(url);
-      } catch (IOException ex) {
-      }
-    }
-    starBuffImage = StarRating.resizeImage(starBuffImage, STAR_IMAGE_HEIGHT);
-    BufferedImage image = getImage();
-    setIcon(new ImageIcon(image));
+  void setWholeStarImage(ImageIcon starImage) {
+    this.wholeStarImage = resizeImage(starImage);
+    createBufferedImage();
+    setIcon(getHalfStarImage());
     validate();
     repaint();
+  }
+
+  private void createBufferedImage() {
+    starBuffImage = new BufferedImage(wholeStarImage.getIconWidth(), wholeStarImage.getIconHeight(), 6);
+    Image im = wholeStarImage.getImage();
+    Graphics2D g = starBuffImage.createGraphics();
+    g.drawImage(im, 0, 0, this);
+
+  }
+
+  private ImageIcon resizeImage(ImageIcon icon) {
+    int w = icon.getIconWidth();
+    int h = icon.getIconHeight();
+    double r = (double) w / h;
+    int newHeight = STAR_IMAGE_HEIGHT;
+    int newWidth = (int) (STAR_IMAGE_HEIGHT * r);
+    Image image = icon.getImage();
+    Image scaled = image.getScaledInstance(newWidth, newHeight, Image.SCALE_DEFAULT);
+    return new ImageIcon(scaled);
   }
 }

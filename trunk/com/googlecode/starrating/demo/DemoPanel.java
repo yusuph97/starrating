@@ -8,14 +8,20 @@ package com.googlecode.starrating.demo;
 import com.googlecode.starrating.StarRating;
 import com.googlecode.starrating.StarTableCellEditor;
 import com.googlecode.starrating.StarTableCellRenderer;
+import java.awt.Image;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.table.DefaultTableModel;
@@ -56,11 +62,11 @@ public class DemoPanel extends javax.swing.JPanel {
 
       public void editingCanceled(ChangeEvent e) {
         StarTableCellEditor s = (StarTableCellEditor) e.getSource();
-        System.out.println("CellEditorListener notified (Editing Cancelled), value: " +  s.getCellEditorValue());
+        System.out.println("CellEditorListener notified (Editing Cancelled), value: " + s.getCellEditorValue());
       }
     });
     srating.setRate(2.5);
-    srating.changeStarImage(StarRating.class.getResource(StarRating.EURO_IMAGE));
+    srating.changeStarImage(new ImageIcon(StarRating.class.getResource(StarRating.EURO_IMAGE)));
     /**
      * Adds a PropertyChangeListener to the StarRating and listens for property
      * {@link StarRating#RATE_CHANGED} change.
@@ -73,7 +79,7 @@ public class DemoPanel extends javax.swing.JPanel {
         }
       }
     });
-    
+
   }
 
   /** This method is called from within the constructor to
@@ -253,17 +259,13 @@ public class DemoPanel extends javax.swing.JPanel {
 }//GEN-LAST:event_combo_maxRateActionPerformed
 
     private void combo_starImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_starImageActionPerformed
-      File f = (File) combo_starImage.getSelectedItem();
-      URL url = null;
-      try {
-        url = f.toURI().toURL();
-        srating.changeStarImage(url);
-        srating.validate();
-        srating.repaint();
-        panel.validate();
-        panel.repaint();
-      } catch (MalformedURLException ex) {
-      }
+      ImageIcon im = (ImageIcon) combo_starImage.getSelectedItem();
+      srating.changeStarImage(im);
+      srating.validate();
+      srating.repaint();
+      panel.validate();
+      panel.repaint();
+
     }//GEN-LAST:event_combo_starImageActionPerformed
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JCheckBox checkbox_enabled;
@@ -284,25 +286,18 @@ public class DemoPanel extends javax.swing.JPanel {
 
   private void createStarModel() {
     starModel = new DefaultComboBoxModel();
-    URL res = getClass().getResource("../images");
-    File dir = null;
-    try {
-      dir = new File(res.toURI());
-    } catch (URISyntaxException ex) {
-    }
-    if (dir.isDirectory()) {
-      File[] files = dir.listFiles(new FilenameFilter() {
-
-        public boolean accept(File dir, String name) {
-          if (name.startsWith("remove")) {
-            return false;
-          } else {
-            return true;
-          }
-        }
-      });
-      starModel = new DefaultComboBoxModel(files);
-    }
+    ImageIcon euro = new ImageIcon(getClass().getResource("/com/googlecode/starrating/images/euro.png"));
+    euro.setDescription("Euro");
+    ImageIcon face = new ImageIcon(getClass().getResource("/com/googlecode/starrating/images/face.png"));
+    face.setDescription("Face");
+    ImageIcon note = new ImageIcon(getClass().getResource("/com/googlecode/starrating/images/note.png"));
+    note.setDescription("Note");
+    ImageIcon star = new ImageIcon(getClass().getResource("/com/googlecode/starrating/images/star.png"));
+    star.setDescription("Star");
+    ImageIcon whiteStar = new ImageIcon(getClass().getResource("/com/googlecode/starrating/images/whiteStar.png"));
+    whiteStar.setDescription("whiteStar");
+    ImageIcon[] icons = {euro, face, note, star, whiteStar};
+    starModel = new DefaultComboBoxModel(icons);
 
   }
 }
