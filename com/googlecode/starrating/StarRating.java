@@ -212,7 +212,6 @@ public class StarRating extends javax.swing.JPanel implements StarRatingConstant
     this.rate = rate;
     previewRate(rate);
     valueLabel.setValue(rate);
-    firePropertyChange(RATE_CHANGED, oldRate, rate);
   }
 
   /**
