@@ -18,7 +18,7 @@ import javax.swing.JTable;
  * @author ssoldatos
  * @since version 0.9
  */
-class StarMouseAdapter extends MouseAdapter {
+class StarMouseAdapter extends MouseAdapter{
 
   /** The source object's index if it's a {@link Star} or -1 if the source is a
    * {@link RemoveButton} or {@link ValueLabel} */
@@ -120,7 +120,10 @@ class StarMouseAdapter extends MouseAdapter {
   @Override
   public void mouseClicked(MouseEvent e) {
     if (starRating.isEnabled() && sourceType != VALUE_LABEL) {
-      starRating.setRate((double) (index + 1) / 2);
+      double oldRate = starRating.getRate();
+      double newRate = (double) ((index + 1) / 2);
+      starRating.setRate(newRate);
+      starRating.firePropertyChange(StarRating.RATE_CHANGED, oldRate, newRate);
       starRating.previewRate((double) (index + 1) / 2);
       this.starRating.setOpaque(false);
       if (isTableEditor) {
