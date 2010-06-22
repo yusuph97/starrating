@@ -121,7 +121,7 @@ class StarMouseAdapter extends MouseAdapter{
   public void mouseClicked(MouseEvent e) {
     if (starRating.isEnabled() && sourceType != VALUE_LABEL) {
       double oldRate = starRating.getRate();
-      double newRate = (double) ((index + 1) / 2);
+      double newRate = (double) (index + 1) / 2;
       starRating.setRate(newRate);
       starRating.firePropertyChange(StarRating.RATE_CHANGED, oldRate, newRate);
       starRating.previewRate((double) (index + 1) / 2);
