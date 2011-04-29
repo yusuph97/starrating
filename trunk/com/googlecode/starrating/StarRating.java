@@ -117,7 +117,6 @@ public class StarRating extends javax.swing.JPanel implements StarRatingConstant
   // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
   private void initComponents() {
 
-    setBackground(new java.awt.Color(255, 255, 255));
     setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
     setMaximumSize(new java.awt.Dimension(10000, 20));
     setMinimumSize(new java.awt.Dimension(150, 20));
